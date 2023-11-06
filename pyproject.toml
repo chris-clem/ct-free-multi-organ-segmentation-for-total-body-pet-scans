@@ -5,10 +5,11 @@ description = ""
 authors = ["Christoph Clement <christoph.clement@students.unibe.ch>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9.13,<3.13"
 fire = "^0.4.0"
 loguru = "^0.6.0"
 tqdm = "^4.62.3"
+pandas = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"

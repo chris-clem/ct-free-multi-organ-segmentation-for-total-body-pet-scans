@@ -49,7 +49,6 @@ train
 ```
 
 ### 1. Organize raw data
-
 Creates a `raw-organized` dir in each scanner dir containing the patient dirs.
 Each patient dir comprises the CT and PET data.
 
@@ -58,7 +57,6 @@ poetry run python pet_seg/01_organize_raw_data.py
 ```
 
 ### 2. Prepare MOOSE-to_run data
-
 Creates a `MOOSE-to_run` dir in each scanner dir containing only the CT data for each patient, which is required by MOOSE.
 
 ```bash
@@ -75,4 +73,13 @@ either as a local install or with Docker.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 moose -f /home/user/Data/total-body-pet-segmentation/Bern_Quadra/MOOSE-to_run
+```
+
+## nn-UNet Training
+
+### 1. Create data CSV file
+Create a CSV file with the paths to the data for a given scanner.
+
+```bash
+poetry run python pet_seg/03_create_data_csv.py --scanner=Bern_Quadra
 ```
