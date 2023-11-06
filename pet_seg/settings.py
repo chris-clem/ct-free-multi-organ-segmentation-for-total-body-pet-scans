@@ -93,3 +93,21 @@ TEST_PATIENT_IDS = {
 }
 
 DATA_CSVS_DIR = DATA_ROOT_DIR / "data_csvs"
+
+LABELS_TO_ORGANS = {
+    0: "background",
+    1: "Adrenal-glands",
+    2: "Aorta",
+    3: "Bladder",
+    4: "Brain",
+    5: "Heart",
+    6: "Kidneys",
+    7: "Liver",
+    8: "Pancreas",
+    9: "Spleen",
+    10: "Thyroid",
+    11: "Inferior-vena-cava",
+    12: "Lung",
+}
+
+ORGANS_TO_LABELS = {v: k for k, v in LABELS_TO_ORGANS.items()}

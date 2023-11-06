@@ -83,3 +83,11 @@ Create a CSV file with the paths to the data for a given scanner.
 ```bash
 poetry run python pet_seg/03_create_data_csv.py --scanner=Bern_Quadra
 ```
+
+### 2. Convert data for nnU-Net
+Convert data for nnU-Net (see https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_format.md).
+
+```bash
+source nnunetv2.env
+poetry run python pet_seg/04_convert_data_for_nnunet.py --data_csv_path=...
+```
