@@ -91,3 +91,19 @@ Convert data for nnU-Net (see https://github.com/MIC-DKFZ/nnUNet/blob/master/doc
 source nnunetv2.env
 poetry run python pet_seg/04_convert_data_for_nnunet.py --data_csv_path=...
 ```
+
+### 3. Run nnU-Net planning and preprocessing
+
+Check the dataset integrity, and overwrite existing fingerprints for dataset 1
+
+```bash
+poetry run nnUNetv2_plan_and_preprocess -d 1 --verify_dataset_integrity --clean
+```
+
+### 4. Run nnU-Net Training
+
+Use GPU 0, 3D fullres, dataset 1, and fold 0.
+
+```bash
+CUDA_VISIBLE_DEVICES=0 poetry run nnUNetv2_train 1 3d_fullres 0
+```
