@@ -74,7 +74,7 @@ either as a local install or with Docker.
 CUDA_VISIBLE_DEVICES=0 moose -f /home/user/Data/total-body-pet-segmentation/Bern_Quadra/MOOSE-to_run
 ```
 
-## nn-UNet Training
+## nn-UNet Training and Inference
 
 ### 1. Create data CSV file
 Creates a CSV file with the paths to the data for a given scanner.
@@ -113,7 +113,9 @@ Creates predicted segmentation masks in `NNUNET_RESULTS_DIR` and computes metric
 CUDA_VISIBLE_DEVICES=0 poetry run python pet_seg/05_predict_nnunet.py --model_dataset_ids=3 --input_dataset_ids=4
 ```
 
-### 6. Extract nnU-Net Results
+## Results Analysis
+
+### 1. Extract nnU-Net Results
 Creates csv files containing the dice scores for each patient and organ.
 Files are stored in `NNUNET_VAL_TEST_RESULTS_DIR`.
 
@@ -123,14 +125,14 @@ Files are stored in `NNUNET_VAL_TEST_RESULTS_DIR`.
 poetry run python pet_seg/06_extract_nnunet_results.py --model_dataset_ids=3 --test_datasets=test_internal
 ```
 
-### 7. Analyze nnU-Net Results
+### 2. Analyze nnU-Net Results
 Computes per organ dice scores for all extracted nnU-Net results stored in NNUNET_VAL_TEST_RESULTS_DIR.
 
 ```bash
 poetry run python pet_seg/07_analyze_nnunet_results.py
 ```
 
-### 8. Plot nnU-Net Results
+### 3. Plot nnU-Net Results
 
 ```bash
 poetry run streamlit run pet_seg/08_plot_nnunet_results.py
