@@ -64,3 +64,15 @@ Creates a `MOOSE-to_run` dir in each scanner dir containing only the CT data for
 ```bash
 poetry run python pet_seg/02_prepare_moose_to_run_data.py --scanner=Bern_Quadra
 ```
+
+## Run MOOSE
+
+### 0. Install MOOSE 0.1.4
+Follow instructions from https://github.com/QIMP-Team/MOOSE/tree/d9c0a9bfb8d25920cf2624cd346828bb3071112f for your prefered way,
+either as a local install or with Docker.
+
+### 1. Run MOOSE
+
+```bash
+CUDA_VISIBLE_DEVICES=0 moose -f /home/user/Data/total-body-pet-segmentation/Bern_Quadra/MOOSE-to_run
+```
