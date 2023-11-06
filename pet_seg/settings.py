@@ -111,3 +111,16 @@ LABELS_TO_ORGANS = {
 }
 
 ORGANS_TO_LABELS = {v: k for k, v in LABELS_TO_ORGANS.items()}
+
+DATASET_IDS_TO_NAMES = {
+    1: "Dataset001_Bern_Quadra-num_train=331-num_test=25-NAC",
+    2: "Dataset002_SH_uExplorer-num_train=626-num_test=25-NAC",
+    3: "Dataset003_Bern_Quadra,SH_uExplorer-num_train=957-num_test=50-NAC",
+    4: "Dataset004_Bern_Quadra_UHS-num_train=0-num_test=21-NAC",
+    5: "Dataset005_Bern_Vision600-num_train=0-num_test=51-NAC",
+    6: "Dataset006_Bern_Vision600_cross_tracer-num_train=0-num_test=18-NAC",
+    7: "Dataset007_SH_GE_Discovery-num_train=0-num_test=104-NAC",
+    8: "Dataset008_SH_UI780-num_train=0-num_test=97-NAC",
+    9: "Dataset009_SH_Vision450-num_train=0-num_test=51-NAC",
+    10: "Dataset010_SH_Vision450_cross_tracer-num_train=0-num_test=40-NAC",
+}

@@ -78,14 +78,14 @@ CUDA_VISIBLE_DEVICES=0 moose -f /home/user/Data/total-body-pet-segmentation/Bern
 ## nn-UNet Training
 
 ### 1. Create data CSV file
-Create a CSV file with the paths to the data for a given scanner.
+Creates a CSV file with the paths to the data for a given scanner.
 
 ```bash
 poetry run python pet_seg/03_create_data_csv.py --scanner=Bern_Quadra
 ```
 
 ### 2. Convert data for nnU-Net
-Convert data for nnU-Net (see https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_format.md).
+Converts data for nnU-Net (see https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_format.md).
 
 ```bash
 source nnunetv2.env
@@ -94,7 +94,7 @@ poetry run python pet_seg/04_convert_data_for_nnunet.py --data_csv_path=...
 
 ### 3. Run nnU-Net planning and preprocessing
 
-Check the dataset integrity, and overwrite existing fingerprints for dataset 1
+Checks the dataset integrity, and overwrites existing fingerprints for dataset 1
 
 ```bash
 poetry run nnUNetv2_plan_and_preprocess -d 1 --verify_dataset_integrity --clean
@@ -106,4 +106,13 @@ Use GPU 0, 3D fullres, dataset 1, and fold 0.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 poetry run nnUNetv2_train 1 3d_fullres 0
+```
+
+### 5. Run nnU-Net Prediction
+
+Runs nnU-Net prediction with model trained on dataset 3 on dataset with id 4.
+Creates predicted segmentation masks in `NNUNET_RESULTS_DIR` and computes metrics saved in "summary.json" file.
+
+```bash
+CUDA_VISIBLE_DEVICES=0 poetry run python pet_seg/05_predict_nnunet.py --model_dataset_ids=3 --input_dataset_ids=4
 ```
