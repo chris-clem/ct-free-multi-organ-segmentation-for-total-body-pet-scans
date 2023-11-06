@@ -1,9 +1,13 @@
 from pathlib import Path
 
+# Paths
 DATA_ROOT_DIR = Path.home() / "Data" / "total-body-pet-segmentation"
 
 BERN_QUADRA_RAW_DIR = DATA_ROOT_DIR / "train" / "Bern_Quadra" / "raw"
 SH_UEXPLORER_RAW_DIR = DATA_ROOT_DIR / "train" / "SH_uExplorer" / "raw"
+DATA_CSVS_DIR = DATA_ROOT_DIR / "data_csvs"
+DICOM_HEADERS_DIR = DATA_ROOT_DIR / "dicom_headers"
+NNUNET_VAL_TEST_RESULTS_DIR = DATA_ROOT_DIR / "nnunet_results"
 
 RAW_PATIENTS_DIRS = {
     "Bern_Quadra": [
@@ -19,6 +23,7 @@ RAW_PATIENTS_DIRS = {
     ],
 }
 
+# Constants
 SCANNER_TO_STAGE = {
     "Bern_Quadra": "train",
     "SH_uExplorer": "train",
@@ -92,8 +97,6 @@ TEST_PATIENT_IDS = {
     "SH_uExplorer": SH_UEXPLORER_TEST_PATIENT_IDS,
 }
 
-DATA_CSVS_DIR = DATA_ROOT_DIR / "data_csvs"
-
 LABELS_TO_ORGANS = {
     0: "background",
     1: "Adrenal-glands",
@@ -124,3 +127,22 @@ DATASET_IDS_TO_NAMES = {
     9: "Dataset009_SH_Vision450-num_train=0-num_test=51-NAC",
     10: "Dataset010_SH_Vision450_cross_tracer-num_train=0-num_test=40-NAC",
 }
+
+
+TEST_DATASETS_TO_IDS = {
+    "test_internal": (1, 2),
+    "test_cross_scanner": (4, 5, 7, 8, 9),
+    "test_cross_tracer": (6, 10),
+}
+
+ORGANS = [
+    "Bladder",
+    "Brain",
+    "Heart",
+    "Kidneys",
+    "Liver",
+    "Pancreas",
+    "Spleen",
+    "Thyroid",
+    "Lung",
+]

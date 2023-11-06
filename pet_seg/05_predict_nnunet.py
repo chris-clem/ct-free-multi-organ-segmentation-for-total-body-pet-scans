@@ -1,4 +1,3 @@
-import itertools
 import os
 from pathlib import Path
 
@@ -18,27 +17,24 @@ def main():
 
 
 def predict_nnunet(
-    model_dataset_ids: str = "3",
+    model_dataset_id: str = "3",
     input_dataset_ids: str = "4_5_6_7_8_9_10",
     config: str = "3d_cascade_fullres",
     folds: str = "0 1 2 3 4",
     checkpoint_name: str = "checkpoint_best",
     compute_metrics_only: bool = False,
 ):
-    """Run nnUNet prediction on the given models and input datasets.
+    """Run nnUNet prediction on the given model and input datasets.
 
     Args:
-        model_dataset_ids (str): Models trained on the given datasets to use, separated by underscores.
+        model_dataset_id (str): Models trained on the given datasets to use.
         input_dataset_ids (str): Datasets to use as input to the models, separated by underscores.
         config (str): nnUNet config to use. Can be "2d" or "3d_cascade_fullres".
         folds (str): Folds to use, separated by spaces.
         checkpoint_name (str): Name of the checkpoint to use. Can be "checkpoint_best" or "checkpoint_latest".
         compute_metrics_only (bool): Whether to only compute metrics on existing predictions.
     """
-    # Iterate over all combinations of models and input datasets
-    for model_dataset_id, input_dataset_id in tqdm(
-        sorted(itertools.product(model_dataset_ids.split("_"), input_dataset_ids.split("_")))
-    ):
+    for input_dataset_id in tqdm(input_dataset_ids.split("_")):
         # Get names from ids
         model_dataset_name = DATASET_IDS_TO_NAMES[int(model_dataset_id)]
         input_dataset_name = DATASET_IDS_TO_NAMES[int(input_dataset_id)]

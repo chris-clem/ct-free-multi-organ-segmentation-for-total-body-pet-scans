@@ -70,7 +70,6 @@ Follow instructions from https://github.com/QIMP-Team/MOOSE/tree/d9c0a9bfb8d2592
 either as a local install or with Docker.
 
 ### 1. Run MOOSE
-
 ```bash
 CUDA_VISIBLE_DEVICES=0 moose -f /home/user/Data/total-body-pet-segmentation/Bern_Quadra/MOOSE-to_run
 ```
@@ -93,7 +92,6 @@ poetry run python pet_seg/04_convert_data_for_nnunet.py --data_csv_path=...
 ```
 
 ### 3. Run nnU-Net planning and preprocessing
-
 Checks the dataset integrity, and overwrites existing fingerprints for dataset 1
 
 ```bash
@@ -101,7 +99,6 @@ poetry run nnUNetv2_plan_and_preprocess -d 1 --verify_dataset_integrity --clean
 ```
 
 ### 4. Run nnU-Net Training
-
 Use GPU 0, 3D fullres, dataset 1, and fold 0.
 
 ```bash
@@ -109,10 +106,32 @@ CUDA_VISIBLE_DEVICES=0 poetry run nnUNetv2_train 1 3d_fullres 0
 ```
 
 ### 5. Run nnU-Net Prediction
-
 Runs nnU-Net prediction with model trained on dataset 3 on dataset with id 4.
 Creates predicted segmentation masks in `NNUNET_RESULTS_DIR` and computes metrics saved in "summary.json" file.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 poetry run python pet_seg/05_predict_nnunet.py --model_dataset_ids=3 --input_dataset_ids=4
+```
+
+### 6. Extract nnU-Net Results
+Creates csv files containing the dice scores for each patient and organ.
+Files are stored in `NNUNET_VAL_TEST_RESULTS_DIR`.
+
+```bash
+
+```bash
+poetry run python pet_seg/06_extract_nnunet_results.py --model_dataset_ids=3 --test_datasets=test_internal
+```
+
+### 7. Analyze nnU-Net Results
+Computes per organ dice scores for all extracted nnU-Net results stored in NNUNET_VAL_TEST_RESULTS_DIR.
+
+```bash
+poetry run python pet_seg/07_analyze_nnunet_results.py
+```
+
+### 8. Plot nnU-Net Results
+
+```bash
+poetry run streamlit run pet_seg/08_plot_nnunet_results.py
 ```
