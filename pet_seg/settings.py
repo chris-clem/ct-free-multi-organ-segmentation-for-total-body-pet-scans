@@ -18,3 +18,15 @@ RAW_PATIENTS_DIRS = {
         SH_UEXPLORER_RAW_DIR / "SH_Explorer_first_84_334_dicom" / "PART2",
     ],
 }
+
+SCANNER_TO_STAGE = {
+    "Bern_Quadra": "train",
+    "SH_uExplorer": "train",
+    "Bern_Quadra_UHS": "test",
+    "Bern_Vision600_cross_tracer": "test",
+    "Bern_Vision600": "test",
+    "SH_GE_Discovery": "test",
+    "SH_UI780": "test",
+    "SH_Vision450": "test",
+    "SH_Vision450_cross_tracer": "test",
+}

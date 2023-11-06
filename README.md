@@ -56,3 +56,11 @@ Each patient dir comprises the CT and PET data.
 ```bash
 poetry run python pet_seg/01_organize_raw_data.py
 ```
+
+### 2. Prepare MOOSE-to_run data
+
+Creates a `MOOSE-to_run` dir in each scanner dir containing only the CT data for each patient, which is required by MOOSE.
+
+```bash
+poetry run python pet_seg/02_prepare_moose_to_run_data.py --scanner=Bern_Quadra
+```
