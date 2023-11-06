@@ -1,0 +1,38 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.4.0
+  hooks:
+  - id: check-added-large-files
+  - id: end-of-file-fixer
+  - id: check-builtin-literals
+  - id: check-case-conflict
+  - id: check-docstring-first
+  - id: check-executables-have-shebangs
+  - id: check-ast
+  - id: check-json
+  - id: check-toml
+  - id: check-yaml
+  - id: check-symlinks
+  - id: check-merge-conflict
+  - id: debug-statements
+  - id: trailing-whitespace
+
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.8.4
+  hooks:
+  - id: flake8
+    additional_dependencies: [flake8-typing-imports==1.6.0]
+    args: ['--max-line-length=120']
+
+- repo: https://github.com/asottile/reorder_python_imports
+  rev: v2.3.6
+  hooks:
+  - id: reorder-python-imports
+    args: [--py3-plus]
+
+- repo: https://github.com/psf/black
+  rev: 22.3.0
+  hooks:
+  - id: black
+    language_version: python3
+    args: [-l 120]

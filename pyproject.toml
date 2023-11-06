@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pet_seg"
+version = "0.1.0"
+description = ""
+authors = ["Christoph Clement <christoph.clement@students.unibe.ch>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fire = "^0.4.0"
+loguru = "^0.6.0"
+tqdm = "^4.62.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
+pre-commit = "^2.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.masonry.api"
