@@ -10,9 +10,9 @@ fire = "^0.4.0"
 loguru = "^0.6.0"
 tqdm = "^4.62.3"
 pandas = "^2.1.2"
-torch = "^2.1.0"
-nnunetv2 = "^2.2.1"
 streamlit = "^1.28.1"
+torch = {path = "../torch-2.1.0+cu121-cp39-cp39-linux_x86_64.whl"}
+totalsegmentator = "^2.0.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"

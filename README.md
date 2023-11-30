@@ -31,29 +31,28 @@ poetry run pre-commit install
 ## Data Preparation
 
 ### 0. Required dir structure
-- `DATA_ROOT_DIR` defined in `settings.py` contains a `train` and `test` subdir, each containing subdirs named after the different scanners, e.g. Bern_Quadra, SH_uExplorer, Bern_Vision600, ... .
-- `SCANNER_TO_STAGE` in `settings.py` defines which scanners are used for which stage.
-- Each scanner dir needs a `raw` subdir containing the original data that Song collected.
-  The structure for each scanner is a bit different, which is defined in `RAW_PATIENTS_DIRS` in `settings.py`.
+- `DATA_ROOT_DIR` defined in `settings.py` contains a `train` and `test` subdir, each containing subdirs named after the different scanners, e.g. Bern_Quadra.
+- Each scanner dir contains a subdir for each patient, named after the patient ID, e.g. 01122021_1_20211201_164050.
+- Each patient dir contains various NIFTI files, e.g. CT and PET.
 
 ```bash
 train
 ├── Bern_Quadra
-│   └── raw
-│       ├── NAC_only
-│       └── NASC_NSC
+│   ├── 01122021_1_20211201_164050
+│   ├── 01122021_2_20211201_164139
+│   ├── 01122021_3_20211201_164209
+│   └── ...
 └── SH_uExplorer
-    └── raw
-        ├── Explorer_20230509_dicom_233
-        └── SH_Explorer_first_84_334_dicom
+    ├── Anonymous_ANO_20220812_1618356_084329
+    ├── Anonymous_ANO_20220812_1619483_104008
+    ├── Anonymous_ANO_20220812_1621040_105304
+    └── ...
 ```
 
-### 1. Organize raw data
-Creates a `raw-organized` dir in each scanner dir containing the patient dirs.
-Each patient dir comprises the CT and PET data.
+### 1. Create CT-based segmentation masks with TotalSegmentator
 
 ```bash
-poetry run python pet_seg/01_organize_raw_data.py
+poetry run python pet_seg/01_run_total_segmentator.py --scanner=Bern_Quadra
 ```
 
 ### 2. Prepare MOOSE-to_run data
