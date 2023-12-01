@@ -55,23 +55,12 @@ train
 poetry run python pet_seg/01_run_total_segmentator.py --scanner=Bern_Quadra
 ```
 
-### 2. Prepare MOOSE-to_run data
-Creates a `MOOSE-to_run` dir in each scanner dir containing only the CT data for each patient, which is required by MOOSE.
+### 2. Convert data to common space
 
 ```bash
-poetry run python pet_seg/02_prepare_moose_to_run_data.py --scanner=Bern_Quadra
+poetry run python pet_seg/02_convert_data_to_common_space.py --scanner=Bern_Quadra
 ```
 
-## Run MOOSE
-
-### 0. Install MOOSE 0.1.4
-Follow instructions from https://github.com/QIMP-Team/MOOSE/tree/d9c0a9bfb8d25920cf2624cd346828bb3071112f for your prefered way,
-either as a local install or with Docker.
-
-### 1. Run MOOSE
-```bash
-CUDA_VISIBLE_DEVICES=0 moose -f /home/user/Data/total-body-pet-segmentation/Bern_Quadra/MOOSE-to_run
-```
 
 ## nn-UNet Training and Inference
 
