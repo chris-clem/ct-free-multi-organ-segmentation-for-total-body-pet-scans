@@ -55,12 +55,11 @@ train
 poetry run python pet_seg/01_run_total_segmentator.py --scanner=Bern_Quadra
 ```
 
-### 2. Convert data to common space
+### 2. Resize TS segmentation to PET space
 
 ```bash
-poetry run python pet_seg/02_convert_data_to_common_space.py --scanner=Bern_Quadra
+poetry run python pet_seg/02_resize_ts_seg_to_pet.py --scanner=Bern_Quadra
 ```
-
 
 ## nn-UNet Training and Inference
 
