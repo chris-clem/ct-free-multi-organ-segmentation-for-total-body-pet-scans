@@ -71,7 +71,7 @@ TEST_PATIENT_IDS = {
     "SH_uExplorer": SH_UEXPLORER_TEST_PATIENT_IDS,
 }
 
-LABELS_TO_ORGANS = {
+INDEX_TO_ANATOMICAL_STRUCTURES = {
     0: "background",
     1: "spleen",
     2: "kidney_right",
@@ -192,4 +192,208 @@ LABELS_TO_ORGANS = {
     117: "costal_cartilages",
 }
 
-ORGANS_TO_LABELS = {v: k for k, v in LABELS_TO_ORGANS.items()}
+MERGED_ANATOMICAL_STRUCTURES = {
+    "kidneys": [
+        "kidney_right",
+        "kidney_left",
+    ],
+    "adrenal_glands": [
+        "adrenal_gland_right",
+        "adrenal_gland_left",
+    ],
+    "lungs": [
+        "lung_upper_lobe_left",
+        "lung_lower_lobe_left",
+        "lung_upper_lobe_right",
+        "lung_middle_lobe_right",
+        "lung_lower_lobe_right",
+    ],
+    "kidney_cysts": [
+        "kidney_cyst_left",
+        "kidney_cyst_right",
+    ],
+    "vertebraes": [
+        "vertebrae_S1",
+        "vertebrae_L5",
+        "vertebrae_L4",
+        "vertebrae_L3",
+        "vertebrae_L2",
+        "vertebrae_L1",
+        "vertebrae_T12",
+        "vertebrae_T11",
+        "vertebrae_T10",
+        "vertebrae_T9",
+        "vertebrae_T8",
+        "vertebrae_T7",
+        "vertebrae_T6",
+        "vertebrae_T5",
+        "vertebrae_T4",
+        "vertebrae_T3",
+        "vertebrae_T2",
+        "vertebrae_T1",
+        "vertebrae_C7",
+        "vertebrae_C6",
+        "vertebrae_C5",
+        "vertebrae_C4",
+        "vertebrae_C3",
+        "vertebrae_C2",
+        "vertebrae_C1",
+    ],
+    "subclavian_arteries": [
+        "subclavian_artery_right",
+        "subclavian_artery_left",
+    ],
+    "common_carotid_arteries": [
+        "common_carotid_artery_right",
+        "common_carotid_artery_left",
+    ],
+    "brachiocephalic_veins": [
+        "brachiocephalic_vein_left",
+        "brachiocephalic_vein_right",
+    ],
+    "vena_cavas": [
+        "superior_vena_cava",
+        "inferior_vena_cava",
+    ],
+    "iliac_arteries": [
+        "iliac_artery_left",
+        "iliac_artery_right",
+    ],
+    "iliac_venas": [
+        "iliac_vena_left",
+        "iliac_vena_right",
+    ],
+    "humeruses": [
+        "humerus_left",
+        "humerus_right",
+    ],
+    "scapulas": [
+        "scapula_left",
+        "scapula_right",
+    ],
+    "claviculas": [
+        "clavicula_left",
+        "clavicula_right",
+    ],
+    "femurs": [
+        "femur_left",
+        "femur_right",
+    ],
+    "hips": [
+        "hip_left",
+        "hip_right",
+    ],
+    "gluteus": [
+        "gluteus_maximus_left",
+        "gluteus_maximus_right",
+        "gluteus_medius_left",
+        "gluteus_medius_right",
+        "gluteus_minimus_left",
+        "gluteus_minimus_right",
+    ],
+    "autochthons": [
+        "autochthon_left",
+        "autochthon_right",
+    ],
+    "iliopsoas": [
+        "iliopsoas_left",
+        "iliopsoas_right",
+    ],
+    "ribs": [
+        "rib_left_1",
+        "rib_left_2",
+        "rib_left_3",
+        "rib_left_4",
+        "rib_left_5",
+        "rib_left_6",
+        "rib_left_7",
+        "rib_left_8",
+        "rib_left_9",
+        "rib_left_10",
+        "rib_left_11",
+        "rib_left_12",
+        "rib_right_1",
+        "rib_right_2",
+        "rib_right_3",
+        "rib_right_4",
+        "rib_right_5",
+        "rib_right_6",
+        "rib_right_7",
+        "rib_right_8",
+        "rib_right_9",
+        "rib_right_10",
+        "rib_right_11",
+        "rib_right_12",
+    ],
+}
+
+ANATOMICAL_REGIONS = {
+    "skeleton": [
+        "skull",
+        "claviculas",
+        "scapulas",
+        "humeruses",
+        "vertebraes",
+        "sternum",
+        "ribs",
+        "costal_cartilages",
+        "hips",
+        "sacrum",
+        "femurs",
+    ],
+    "cardiovascular_system": [
+        "common_carotid_arteries",
+        "brachiocephalic_veins",
+        "subclavian_arteries",
+        "brachiocephalic_trunk",
+        "pulmonary_vein",
+        "vena_cavas",
+        "atrial_appendage_left",
+        "aorta",
+        "portal_vein_and_splenic_vein",
+        "iliac_arteries",
+        "iliac_venas",
+    ],
+    "other_organs": [
+        "brain",
+        "spinal_cord",
+        "thyroid_gland",
+        "trachea",
+        "lungs",
+        "heart",
+        "adrenal_glands",
+        "spleen",
+        "liver",
+        "gallbladder",
+        "kidneys",
+        "kidney_cysts",
+        "pancreas",
+        "prostate",
+    ],
+    "gastrointestinal_tract": [
+        "esophagus",
+        "stomach",
+        "duodenum",
+        "small_bowel",
+        "colon",
+        "urinary_bladder",
+    ],
+    "muscles": [
+        "autochthons",
+        "iliopsoas",
+        "gluteus",
+    ],
+}
+
+
+ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_ANATOMICAL_STRUCTURES.items()}
+
+DATASET_IDS_TO_NAMES = {
+    1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+}
+
+TEST_DATASETS_TO_IDS = {
+    "internal": [1],
+    "cross_scanner": [2, 3, 4, 5, 6],
+    "cross_tracer": [7, 8],
+}
