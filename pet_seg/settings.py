@@ -3,6 +3,8 @@ from pathlib import Path
 # Paths
 DATA_ROOT_DIR = Path.home() / "Data" / "ct-free-multi-organ-segmentation-for-total-body-pet-scans"
 DATA_CSVS_DIR = DATA_ROOT_DIR / "csvs"
+RESULTS_DIR = DATA_ROOT_DIR / "results"
+DICOM_HEADERS_DIR = DATA_ROOT_DIR / "dicom_headers"
 
 # Constants
 SCANNER_TO_STAGE = {
@@ -328,49 +330,49 @@ MERGED_ANATOMICAL_STRUCTURES = {
 }
 
 ANATOMICAL_REGIONS = {
-    "skeleton": [
-        "skull",
-        "claviculas",
-        "scapulas",
-        "humeruses",
-        "vertebraes",
-        "sternum",
-        "ribs",
-        "costal_cartilages",
-        "hips",
-        "sacrum",
-        "femurs",
+    "skeleton": [  # 63
+        "skull",  # 1
+        "claviculas",  # 2
+        "scapulas",  # 2
+        "humeruses",  # 2
+        "vertebraes",  # 24
+        "sternum",  # 1
+        "ribs",  # 24
+        "costal_cartilages",  # 2
+        "hips",  # 2
+        "sacrum",  # 1
+        "femurs",  # 2
     ],
-    "cardiovascular_system": [
-        "common_carotid_arteries",
-        "brachiocephalic_veins",
-        "subclavian_arteries",
-        "brachiocephalic_trunk",
-        "pulmonary_vein",
-        "vena_cavas",
-        "atrial_appendage_left",
-        "aorta",
-        "portal_vein_and_splenic_vein",
-        "iliac_arteries",
-        "iliac_venas",
+    "cardiovascular_system": [  # 17
+        "common_carotid_arteries",  # 2
+        "brachiocephalic_veins",  # 2
+        "subclavian_arteries",  # 2
+        "brachiocephalic_trunk",  # 1
+        "pulmonary_vein",  # 1
+        "vena_cavas",  # 2
+        "atrial_appendage_left",  # 1
+        "aorta",  # 1
+        "portal_vein_and_splenic_vein",  # 1
+        "iliac_arteries",  # 2
+        "iliac_venas",  # 2
     ],
-    "other_organs": [
+    "other_organs": [  # 21
         "brain",
         "spinal_cord",
         "thyroid_gland",
         "trachea",
-        "lungs",
+        "lungs",  # 5
         "heart",
-        "adrenal_glands",
+        "adrenal_glands",  # 2
         "spleen",
         "liver",
-        "gallbladder",
-        "kidneys",
-        "kidney_cysts",
+        # "gallbladder",
+        "kidneys",  # 2
+        # "kidney_cysts",  # 2
         "pancreas",
-        "prostate",
+        # "prostate",
     ],
-    "gastrointestinal_tract": [
+    "gastrointestinal_tract": [  # 6
         "esophagus",
         "stomach",
         "duodenum",
@@ -378,22 +380,34 @@ ANATOMICAL_REGIONS = {
         "colon",
         "urinary_bladder",
     ],
-    "muscles": [
-        "autochthons",
-        "iliopsoas",
-        "gluteus",
+    "muscles": [  # 10
+        "autochthons",  # 2
+        "iliopsoas",  # 2
+        "gluteus",  # 6
     ],
 }
 
 
 ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_ANATOMICAL_STRUCTURES.items()}
 
-DATASET_IDS_TO_NAMES = {
+MODEL_DATASET_IDS_TO_NAMES = {
     1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
 }
 
+TEST_DATASET_IDS_TO_NAMES = {
+    0: "Dataset000_Bern_Quadra-num_train=0-num_test=25_NAC",
+    1: "Dataset001_SH_uExplorer-num_train=0-num_test=25_NAC",
+    2: "Dataset002_Bern_Quadra_UHS-num_train=0-num_test=21_NAC",
+    3: "Dataset003_Bern_Vision600-num_train=0-num_test=52_NAC",
+    4: "Dataset004_SH_GE_Discovery-num_train=0-num_test=104_NAC",
+    5: "Dataset005_SH_UI780-num_train=0-num_test=100_NAC",
+    6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
+    7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
+    8: "Dataset008_SH_Vision_cross_tracer-num_train=0-num_test=41_NAC",
+}
+
 TEST_DATASETS_TO_IDS = {
-    "internal": [1],
+    "internal": [0, 1],
     "cross_scanner": [2, 3, 4, 5, 6],
     "cross_tracer": [7, 8],
 }
