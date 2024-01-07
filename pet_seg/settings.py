@@ -403,11 +403,17 @@ TEST_DATASET_IDS_TO_NAMES = {
     5: "Dataset005_SH_UI780-num_train=0-num_test=100_NAC",
     6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
     7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
-    8: "Dataset008_SH_Vision_cross_tracer-num_train=0-num_test=41_NAC",
+    8: "Dataset008_SH_Vision450_cross_tracer-num_train=0-num_test=41_NAC",
 }
 
 TEST_DATASETS_TO_IDS = {
     "internal": [0, 1],
-    "cross_scanner": [2, 3, 4, 5, 6],
+    "cross_scanner": [
+        2,
+        3,
+        4,
+        5,
+        6,
+    ],
     "cross_tracer": [7, 8],
 }
