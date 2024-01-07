@@ -107,11 +107,15 @@ def create_symlinks(
         nnunet_dir (Path): nnUNet target directory (imagesTr or labelsTr).
     """
     for image_path in image_paths:
+        is_dynamic = "dynamic" in image_path
+        is_image = "NASC" in image_path
+
         image_path = Path(image_path)
 
-        patient_id = image_path.parent.name
+        patient_id = image_path.parent.parent.name if is_image else image_path.parent.name
+        image_name = f"{patient_id}_{image_path.name.split('.')[0]}" if is_dynamic else patient_id
 
-        nnunet_image_name = f"{patient_id}.nii.gz" if "label" in nnunet_dir.name else f"{patient_id}_0000.nii.gz"
+        nnunet_image_name = f"{image_name}.nii.gz" if "label" in nnunet_dir.name else f"{image_name}_0000.nii.gz"
         nnunet_image_path = nnunet_dir / nnunet_image_name
 
         try:
