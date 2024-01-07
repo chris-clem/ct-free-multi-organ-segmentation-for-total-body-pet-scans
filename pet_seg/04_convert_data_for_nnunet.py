@@ -7,7 +7,7 @@ import pandas as pd
 from loguru import logger
 from nnunetv2.dataset_conversion.generate_dataset_json import generate_dataset_json
 
-from pet_seg.settings import ORGANS_TO_LABELS
+from pet_seg.settings import ANATOMICAL_STRUCTURES_TO_INDEX
 
 NNUNET_RAW_DIR = Path(os.environ["nnUNet_raw"])
 
@@ -84,7 +84,7 @@ def convert_data_for_nnunet(
     generate_dataset_json(
         output_folder=str(dataset_raw_dir),
         channel_names={0: pet_type.upper()},
-        labels=ORGANS_TO_LABELS,
+        labels=ANATOMICAL_STRUCTURES_TO_INDEX,
         num_training_cases=num_training_cases,
         file_ending=".nii.gz",
         dataset_name=dataset_name,

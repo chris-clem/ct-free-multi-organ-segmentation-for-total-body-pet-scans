@@ -3,6 +3,8 @@ from pathlib import Path
 # Paths
 DATA_ROOT_DIR = Path.home() / "Data" / "ct-free-multi-organ-segmentation-for-total-body-pet-scans"
 DATA_CSVS_DIR = DATA_ROOT_DIR / "csvs"
+RESULTS_DIR = DATA_ROOT_DIR / "results"
+DICOM_HEADERS_DIR = DATA_ROOT_DIR / "dicom_headers"
 
 # Constants
 SCANNER_TO_STAGE = {
@@ -78,7 +80,7 @@ TEST_PATIENT_IDS = {
     "SH_uExplorer": SH_UEXPLORER_TEST_PATIENT_IDS,
 }
 
-LABELS_TO_ORGANS = {
+INDEX_TO_ANATOMICAL_STRUCTURES = {
     0: "background",
     1: "spleen",
     2: "kidney_right",
@@ -199,4 +201,220 @@ LABELS_TO_ORGANS = {
     117: "costal_cartilages",
 }
 
-ORGANS_TO_LABELS = {v: k for k, v in LABELS_TO_ORGANS.items()}
+MERGED_ANATOMICAL_STRUCTURES = {
+    "kidneys": [
+        "kidney_right",
+        "kidney_left",
+    ],
+    "adrenal_glands": [
+        "adrenal_gland_right",
+        "adrenal_gland_left",
+    ],
+    "lungs": [
+        "lung_upper_lobe_left",
+        "lung_lower_lobe_left",
+        "lung_upper_lobe_right",
+        "lung_middle_lobe_right",
+        "lung_lower_lobe_right",
+    ],
+    "kidney_cysts": [
+        "kidney_cyst_left",
+        "kidney_cyst_right",
+    ],
+    "vertebraes": [
+        "vertebrae_S1",
+        "vertebrae_L5",
+        "vertebrae_L4",
+        "vertebrae_L3",
+        "vertebrae_L2",
+        "vertebrae_L1",
+        "vertebrae_T12",
+        "vertebrae_T11",
+        "vertebrae_T10",
+        "vertebrae_T9",
+        "vertebrae_T8",
+        "vertebrae_T7",
+        "vertebrae_T6",
+        "vertebrae_T5",
+        "vertebrae_T4",
+        "vertebrae_T3",
+        "vertebrae_T2",
+        "vertebrae_T1",
+        "vertebrae_C7",
+        "vertebrae_C6",
+        "vertebrae_C5",
+        "vertebrae_C4",
+        "vertebrae_C3",
+        "vertebrae_C2",
+        "vertebrae_C1",
+    ],
+    "subclavian_arteries": [
+        "subclavian_artery_right",
+        "subclavian_artery_left",
+    ],
+    "common_carotid_arteries": [
+        "common_carotid_artery_right",
+        "common_carotid_artery_left",
+    ],
+    "brachiocephalic_veins": [
+        "brachiocephalic_vein_left",
+        "brachiocephalic_vein_right",
+    ],
+    "vena_cavas": [
+        "superior_vena_cava",
+        "inferior_vena_cava",
+    ],
+    "iliac_arteries": [
+        "iliac_artery_left",
+        "iliac_artery_right",
+    ],
+    "iliac_venas": [
+        "iliac_vena_left",
+        "iliac_vena_right",
+    ],
+    "humeruses": [
+        "humerus_left",
+        "humerus_right",
+    ],
+    "scapulas": [
+        "scapula_left",
+        "scapula_right",
+    ],
+    "claviculas": [
+        "clavicula_left",
+        "clavicula_right",
+    ],
+    "femurs": [
+        "femur_left",
+        "femur_right",
+    ],
+    "hips": [
+        "hip_left",
+        "hip_right",
+    ],
+    "gluteus": [
+        "gluteus_maximus_left",
+        "gluteus_maximus_right",
+        "gluteus_medius_left",
+        "gluteus_medius_right",
+        "gluteus_minimus_left",
+        "gluteus_minimus_right",
+    ],
+    "autochthons": [
+        "autochthon_left",
+        "autochthon_right",
+    ],
+    "iliopsoas": [
+        "iliopsoas_left",
+        "iliopsoas_right",
+    ],
+    "ribs": [
+        "rib_left_1",
+        "rib_left_2",
+        "rib_left_3",
+        "rib_left_4",
+        "rib_left_5",
+        "rib_left_6",
+        "rib_left_7",
+        "rib_left_8",
+        "rib_left_9",
+        "rib_left_10",
+        "rib_left_11",
+        "rib_left_12",
+        "rib_right_1",
+        "rib_right_2",
+        "rib_right_3",
+        "rib_right_4",
+        "rib_right_5",
+        "rib_right_6",
+        "rib_right_7",
+        "rib_right_8",
+        "rib_right_9",
+        "rib_right_10",
+        "rib_right_11",
+        "rib_right_12",
+    ],
+}
+
+ANATOMICAL_REGIONS = {
+    "skeleton": [  # 63
+        "skull",  # 1
+        "claviculas",  # 2
+        "scapulas",  # 2
+        "humeruses",  # 2
+        "vertebraes",  # 24
+        "sternum",  # 1
+        "ribs",  # 24
+        "costal_cartilages",  # 2
+        "hips",  # 2
+        "sacrum",  # 1
+        "femurs",  # 2
+    ],
+    "cardiovascular_system": [  # 17
+        "common_carotid_arteries",  # 2
+        "brachiocephalic_veins",  # 2
+        "subclavian_arteries",  # 2
+        "brachiocephalic_trunk",  # 1
+        "pulmonary_vein",  # 1
+        "vena_cavas",  # 2
+        "atrial_appendage_left",  # 1
+        "aorta",  # 1
+        "portal_vein_and_splenic_vein",  # 1
+        "iliac_arteries",  # 2
+        "iliac_venas",  # 2
+    ],
+    "other_organs": [  # 21
+        "brain",
+        "spinal_cord",
+        "thyroid_gland",
+        "trachea",
+        "lungs",  # 5
+        "heart",
+        "adrenal_glands",  # 2
+        "spleen",
+        "liver",
+        # "gallbladder",
+        "kidneys",  # 2
+        # "kidney_cysts",  # 2
+        "pancreas",
+        # "prostate",
+    ],
+    "gastrointestinal_tract": [  # 6
+        "esophagus",
+        "stomach",
+        "duodenum",
+        "small_bowel",
+        "colon",
+        "urinary_bladder",
+    ],
+    "muscles": [  # 10
+        "autochthons",  # 2
+        "iliopsoas",  # 2
+        "gluteus",  # 6
+    ],
+}
+
+
+ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_ANATOMICAL_STRUCTURES.items()}
+
+MODEL_DATASET_IDS_TO_NAMES = {
+    1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+}
+
+TEST_DATASET_IDS_TO_NAMES = {
+    0: "Dataset000_Bern_Quadra-num_train=0-num_test=25_NAC",
+    1: "Dataset001_SH_uExplorer-num_train=0-num_test=25_NAC",
+    2: "Dataset002_Bern_Quadra_UHS-num_train=0-num_test=21_NAC",
+    3: "Dataset003_Bern_Vision600-num_train=0-num_test=52_NAC",
+    4: "Dataset004_SH_GE_Discovery-num_train=0-num_test=104_NAC",
+    5: "Dataset005_SH_UI780-num_train=0-num_test=100_NAC",
+    6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
+    7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
+    8: "Dataset008_SH_Vision_cross_tracer-num_train=0-num_test=41_NAC",
+}
+
+TEST_DATASETS_TO_IDS = {
+    "internal": [0, 1],
+    "cross_scanner": [2, 3, 4, 5, 6],
+    "cross_tracer": [7, 8],
+}
