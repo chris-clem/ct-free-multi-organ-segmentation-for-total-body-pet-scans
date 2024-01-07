@@ -10,6 +10,13 @@ DICOM_HEADERS_DIR = DATA_ROOT_DIR / "dicom_headers"
 SCANNER_TO_STAGE = {
     "Bern_Quadra": "train",
     "SH_uExplorer": "train",
+    "Bern_Quadra_UHS": "test",
+    "Bern_Vision600": "test",
+    "Bern_Vision600_cross_tracer": "test",
+    "SH_GE_Discovery": "test",
+    "SH_UI780": "test",
+    "SH_Vision450": "test",
+    "SH_Vision_cross_tracer": "test",
 }
 
 BERN_QUADRA_TEST_PATIENT_IDS = [
