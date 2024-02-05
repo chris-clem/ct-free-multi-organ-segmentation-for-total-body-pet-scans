@@ -31,6 +31,7 @@ def predict_nnunet(
     test_images_dir_name: str = "imagesTs",
     split_images: bool = False,
     compute_metrics_only: bool = False,
+    use_optimized_labels: bool = False,
 ):
     """Run nnUNet prediction on the given model and input datasets.
 
@@ -42,6 +43,7 @@ def predict_nnunet(
         test_datasets (str): Test datasets to predict on. Can be "internal", "cross_scanner" or "cross_tracer".
         images_dir_name (str): Name of the images directory to use.
         compute_metrics_only (bool): Whether to only compute metrics on existing predictions.
+        use_optimized_labels (bool): Whether to use optimized labels.
     """
     model_dataset_name = MODEL_DATASET_IDS_TO_NAMES[model_dataset_id]
     model_results_dir = NNUNET_RESULTS_DIR / model_dataset_name / f"nnUNetTrainerNoMirroring__nnUNetPlans__{config}"
@@ -133,13 +135,20 @@ def predict_nnunet(
 
         # Compute metrics
         folder_ref_name = test_images_dir_name.replace("images", "labels")
+        output_file_name = "summary.json"
+
+        if use_optimized_labels:
+            folder_ref_name += "_optimized"
+            output_file_name = "summary_optimized.json"
+            output_dir = output_dir / "merged_labels"
 
         compute_metrics_on_folder2(
             folder_ref=raw_dir / folder_ref_name,
             folder_pred=output_dir,
             dataset_json_file=raw_dir / "dataset.json",
             plans_file=model_results_dir / "plans.json",
-            output_file=str(output_file := output_dir / "summary.json"),
+            output_file=str(output_file := output_dir / output_file_name),
+            num_processes=1,
             chill=True,
         )
 
