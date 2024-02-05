@@ -81,316 +81,316 @@ TEST_PATIENT_IDS = {
 }
 
 INDEX_TO_ANATOMICAL_STRUCTURES = {
-    0: "background",
-    1: "spleen",
-    2: "kidney_right",
-    3: "kidney_left",
-    4: "gallbladder",
-    5: "liver",
-    6: "stomach",
-    7: "pancreas",
-    8: "adrenal_gland_right",
-    9: "adrenal_gland_left",
-    10: "lung_upper_lobe_left",
-    11: "lung_lower_lobe_left",
-    12: "lung_upper_lobe_right",
-    13: "lung_middle_lobe_right",
-    14: "lung_lower_lobe_right",
-    15: "esophagus",
-    16: "trachea",
-    17: "thyroid_gland",
-    18: "small_bowel",
-    19: "duodenum",
-    20: "colon",
-    21: "urinary_bladder",
-    22: "prostate",
-    23: "kidney_cyst_left",
-    24: "kidney_cyst_right",
-    25: "sacrum",
-    26: "vertebrae_S1",
-    27: "vertebrae_L5",
-    28: "vertebrae_L4",
-    29: "vertebrae_L3",
-    30: "vertebrae_L2",
-    31: "vertebrae_L1",
-    32: "vertebrae_T12",
-    33: "vertebrae_T11",
-    34: "vertebrae_T10",
-    35: "vertebrae_T9",
-    36: "vertebrae_T8",
-    37: "vertebrae_T7",
-    38: "vertebrae_T6",
-    39: "vertebrae_T5",
-    40: "vertebrae_T4",
-    41: "vertebrae_T3",
-    42: "vertebrae_T2",
-    43: "vertebrae_T1",
-    44: "vertebrae_C7",
-    45: "vertebrae_C6",
-    46: "vertebrae_C5",
-    47: "vertebrae_C4",
-    48: "vertebrae_C3",
-    49: "vertebrae_C2",
-    50: "vertebrae_C1",
-    51: "heart",
-    52: "aorta",
-    53: "pulmonary_vein",
-    54: "brachiocephalic_trunk",
-    55: "subclavian_artery_right",
-    56: "subclavian_artery_left",
-    57: "common_carotid_artery_right",
-    58: "common_carotid_artery_left",
-    59: "brachiocephalic_vein_left",
-    60: "brachiocephalic_vein_right",
-    61: "atrial_appendage_left",
-    62: "superior_vena_cava",
-    63: "inferior_vena_cava",
-    64: "portal_vein_and_splenic_vein",
-    65: "iliac_artery_left",
-    66: "iliac_artery_right",
-    67: "iliac_vena_left",
-    68: "iliac_vena_right",
-    69: "humerus_left",
-    70: "humerus_right",
-    71: "scapula_left",
-    72: "scapula_right",
-    73: "clavicula_left",
-    74: "clavicula_right",
-    75: "femur_left",
-    76: "femur_right",
-    77: "hip_left",
-    78: "hip_right",
-    79: "spinal_cord",
-    80: "gluteus_maximus_left",
-    81: "gluteus_maximus_right",
-    82: "gluteus_medius_left",
-    83: "gluteus_medius_right",
-    84: "gluteus_minimus_left",
-    85: "gluteus_minimus_right",
-    86: "autochthon_left",
-    87: "autochthon_right",
-    88: "iliopsoas_left",
-    89: "iliopsoas_right",
-    90: "brain",
-    91: "skull",
-    92: "rib_right_4",
-    93: "rib_right_3",
-    94: "rib_left_1",
-    95: "rib_left_2",
-    96: "rib_left_3",
-    97: "rib_left_4",
-    98: "rib_left_5",
-    99: "rib_left_6",
-    100: "rib_left_7",
-    101: "rib_left_8",
-    102: "rib_left_9",
-    103: "rib_left_10",
-    104: "rib_left_11",
-    105: "rib_left_12",
-    106: "rib_right_1",
-    107: "rib_right_2",
-    108: "rib_right_5",
-    109: "rib_right_6",
-    110: "rib_right_7",
-    111: "rib_right_8",
-    112: "rib_right_9",
-    113: "rib_right_10",
-    114: "rib_right_11",
-    115: "rib_right_12",
-    116: "sternum",
-    117: "costal_cartilages",
+    0: "Background",
+    1: "Spleen",
+    2: "Kidney Right",
+    3: "Kidney Left",
+    4: "Gallbladder",
+    5: "Liver",
+    6: "Stomach",
+    7: "Pancreas",
+    8: "Adrenal Gland Right",
+    9: "Adrenal Gland Left",
+    10: "Lung Upper Lobe Left",
+    11: "Lung Lower Lobe Left",
+    12: "Lung Upper Lobe Right",
+    13: "Lung Middle Lobe Right",
+    14: "Lung Lower Lobe Right",
+    15: "Esophagus",
+    16: "Trachea",
+    17: "Thyroid Gland",
+    18: "Small Bowel",
+    19: "Duodenum",
+    20: "Colon",
+    21: "Urinary Bladder",
+    22: "Prostate",
+    23: "Kidney Cyst Left",
+    24: "Kidney Cyst Right",
+    25: "Sacrum",
+    26: "Vertebrae S1",
+    27: "Vertebrae L5",
+    28: "Vertebrae L4",
+    29: "Vertebrae L3",
+    30: "Vertebrae L2",
+    31: "Vertebrae L1",
+    32: "Vertebrae T12",
+    33: "Vertebrae T11",
+    34: "Vertebrae T10",
+    35: "Vertebrae T9",
+    36: "Vertebrae T8",
+    37: "Vertebrae T7",
+    38: "Vertebrae T6",
+    39: "Vertebrae T5",
+    40: "Vertebrae T4",
+    41: "Vertebrae T3",
+    42: "Vertebrae T2",
+    43: "Vertebrae T1",
+    44: "Vertebrae C7",
+    45: "Vertebrae C6",
+    46: "Vertebrae C5",
+    47: "Vertebrae C4",
+    48: "Vertebrae C3",
+    49: "Vertebrae C2",
+    50: "Vertebrae C1",
+    51: "Heart",
+    52: "Aorta",
+    53: "Pulmonary Vein",
+    54: "Brachiocephalic Trunk",
+    55: "Subclavian Artery Right",
+    56: "Subclavian Artery Left",
+    57: "Common Carotid Artery Right",
+    58: "Common Carotid Artery Left",
+    59: "Brachiocephalic Vein Left",
+    60: "Brachiocephalic Vein Right",
+    61: "Atrial Appendage Left",
+    62: "Superior Vena Cava",
+    63: "Inferior Vena Cava",
+    64: "Portal Vein and Splenic Vein",
+    65: "Iliac Artery Left",
+    66: "Iliac Artery Right",
+    67: "Iliac Vena Left",
+    68: "Iliac Vena Right",
+    69: "Humerus Left",
+    70: "Humerus Right",
+    71: "Scapula Left",
+    72: "Scapula Right",
+    73: "Clavicula Left",
+    74: "Clavicula Right",
+    75: "Femur Left",
+    76: "Femur Right",
+    77: "Hip Left",
+    78: "Hip Right",
+    79: "Spinal Cord",
+    80: "Gluteus Maximus Left",
+    81: "Gluteus Maximus Right",
+    82: "Gluteus Medius Left",
+    83: "Gluteus Medius Right",
+    84: "Gluteus Minimus Left",
+    85: "Gluteus Minimus Right",
+    86: "Autochthon Left",
+    87: "Autochthon Right",
+    88: "Iliopsoas Left",
+    89: "Iliopsoas Right",
+    90: "Brain",
+    91: "Skull",
+    92: "Rib Right 4",
+    93: "Rib Right 3",
+    94: "Rib Left 1",
+    95: "Rib Left 2",
+    96: "Rib Left 3",
+    97: "Rib Left 4",
+    98: "Rib Left 5",
+    99: "Rib Left 6",
+    100: "Rib Left 7",
+    101: "Rib Left 8",
+    102: "Rib Left 9",
+    103: "Rib Left 10",
+    104: "Rib Left 11",
+    105: "Rib Left 12",
+    106: "Rib Right 1",
+    107: "Rib Right 2",
+    108: "Rib Right 5",
+    109: "Rib Right 6",
+    110: "Rib Right 7",
+    111: "Rib Right 8",
+    112: "Rib Right 9",
+    113: "Rib Right 10",
+    114: "Rib Right 11",
+    115: "Rib Right 12",
+    116: "Sternum",
+    117: "Costal Cartilages",
 }
 
 MERGED_ANATOMICAL_STRUCTURES = {
-    "kidneys": [
-        "kidney_right",
-        "kidney_left",
+    "Kidneys": [
+        "Kidney Right",
+        "Kidney Left",
     ],
-    "adrenal_glands": [
-        "adrenal_gland_right",
-        "adrenal_gland_left",
+    "Adrenal Glands": [
+        "Adrenal Gland Right",
+        "Adrenal Gland Left",
     ],
-    "lungs": [
-        "lung_upper_lobe_left",
-        "lung_lower_lobe_left",
-        "lung_upper_lobe_right",
-        "lung_middle_lobe_right",
-        "lung_lower_lobe_right",
+    "Lungs": [
+        "Lung Upper Lobe Left",
+        "Lung Lower Lobe Left",
+        "Lung Upper Lobe Right",
+        "Lung Middle Lobe Right",
+        "Lung Lower Lobe Right",
     ],
-    "kidney_cysts": [
-        "kidney_cyst_left",
-        "kidney_cyst_right",
+    "Kidney Cysts": [
+        "Kidney Cyst Left",
+        "Kidney Cyst Right",
     ],
-    "vertebraes": [
-        "vertebrae_S1",
-        "vertebrae_L5",
-        "vertebrae_L4",
-        "vertebrae_L3",
-        "vertebrae_L2",
-        "vertebrae_L1",
-        "vertebrae_T12",
-        "vertebrae_T11",
-        "vertebrae_T10",
-        "vertebrae_T9",
-        "vertebrae_T8",
-        "vertebrae_T7",
-        "vertebrae_T6",
-        "vertebrae_T5",
-        "vertebrae_T4",
-        "vertebrae_T3",
-        "vertebrae_T2",
-        "vertebrae_T1",
-        "vertebrae_C7",
-        "vertebrae_C6",
-        "vertebrae_C5",
-        "vertebrae_C4",
-        "vertebrae_C3",
-        "vertebrae_C2",
-        "vertebrae_C1",
+    "Vertebraes": [
+        "Vertebrae S1",
+        "Vertebrae L5",
+        "Vertebrae L4",
+        "Vertebrae L3",
+        "Vertebrae L2",
+        "Vertebrae L1",
+        "Vertebrae T12",
+        "Vertebrae T11",
+        "Vertebrae T10",
+        "Vertebrae T9",
+        "Vertebrae T8",
+        "Vertebrae T7",
+        "Vertebrae T6",
+        "Vertebrae T5",
+        "Vertebrae T4",
+        "Vertebrae T3",
+        "Vertebrae T2",
+        "Vertebrae T1",
+        "Vertebrae C7",
+        "Vertebrae C6",
+        "Vertebrae C5",
+        "Vertebrae C4",
+        "Vertebrae C3",
+        "Vertebrae C2",
+        "Vertebrae C1",
     ],
-    "subclavian_arteries": [
-        "subclavian_artery_right",
-        "subclavian_artery_left",
+    "Subclavian Arteries": [
+        "Subclavian Artery Right",
+        "Subclavian Artery Left",
     ],
-    "common_carotid_arteries": [
-        "common_carotid_artery_right",
-        "common_carotid_artery_left",
+    "Common Carotid Arteries": [
+        "Common Carotid Artery Right",
+        "Common Carotid Artery Left",
     ],
-    "brachiocephalic_veins": [
-        "brachiocephalic_vein_left",
-        "brachiocephalic_vein_right",
+    "Brachiocephalic Veins": [
+        "Brachiocephalic Vein Left",
+        "Brachiocephalic Vein Right",
     ],
-    "vena_cavas": [
-        "superior_vena_cava",
-        "inferior_vena_cava",
+    "Vena Cavas": [
+        "Superior Vena Cava",
+        "Inferior Vena Cava",
     ],
-    "iliac_arteries": [
-        "iliac_artery_left",
-        "iliac_artery_right",
+    "Iliac Arteries": [
+        "Iliac Artery Left",
+        "Iliac Artery Right",
     ],
-    "iliac_venas": [
-        "iliac_vena_left",
-        "iliac_vena_right",
+    "Iliac Venas": [
+        "Iliac Vena Left",
+        "Iliac Vena Right",
     ],
-    "humeruses": [
-        "humerus_left",
-        "humerus_right",
+    "Humeruses": [
+        "Humerus Left",
+        "Humerus Right",
     ],
-    "scapulas": [
-        "scapula_left",
-        "scapula_right",
+    "Scapulas": [
+        "Scapula Left",
+        "Scapula Right",
     ],
-    "claviculas": [
-        "clavicula_left",
-        "clavicula_right",
+    "Claviculas": [
+        "Clavicula Left",
+        "Clavicula Right",
     ],
-    "femurs": [
-        "femur_left",
-        "femur_right",
+    "Femurs": [
+        "Femur Left",
+        "Femur Right",
     ],
-    "hips": [
-        "hip_left",
-        "hip_right",
+    "Hips": [
+        "Hip Left",
+        "Hip Right",
     ],
-    "gluteus": [
-        "gluteus_maximus_left",
-        "gluteus_maximus_right",
-        "gluteus_medius_left",
-        "gluteus_medius_right",
-        "gluteus_minimus_left",
-        "gluteus_minimus_right",
+    "Gluteus": [
+        "Gluteus Maximus Left",
+        "Gluteus Maximus Right",
+        "Gluteus Medius Left",
+        "Gluteus Medius Right",
+        "Gluteus Minimus Left",
+        "Gluteus Minimus Right",
     ],
-    "autochthons": [
-        "autochthon_left",
-        "autochthon_right",
+    "Autochthons": [
+        "Autochthon Left",
+        "Autochthon Right",
     ],
-    "iliopsoas": [
-        "iliopsoas_left",
-        "iliopsoas_right",
+    "Iliopsoas": [
+        "Iliopsoas Left",
+        "Iliopsoas Right",
     ],
-    "ribs": [
-        "rib_left_1",
-        "rib_left_2",
-        "rib_left_3",
-        "rib_left_4",
-        "rib_left_5",
-        "rib_left_6",
-        "rib_left_7",
-        "rib_left_8",
-        "rib_left_9",
-        "rib_left_10",
-        "rib_left_11",
-        "rib_left_12",
-        "rib_right_1",
-        "rib_right_2",
-        "rib_right_3",
-        "rib_right_4",
-        "rib_right_5",
-        "rib_right_6",
-        "rib_right_7",
-        "rib_right_8",
-        "rib_right_9",
-        "rib_right_10",
-        "rib_right_11",
-        "rib_right_12",
+    "Ribs": [
+        "Rib Right 4",
+        "Rib Right 3",
+        "Rib Left 1",
+        "Rib Left 2",
+        "Rib Left 3",
+        "Rib Left 4",
+        "Rib Left 5",
+        "Rib Left 6",
+        "Rib Left 7",
+        "Rib Left 8",
+        "Rib Left 9",
+        "Rib Left 10",
+        "Rib Left 11",
+        "Rib Left 12",
+        "Rib Right 1",
+        "Rib Right 2",
+        "Rib Right 5",
+        "Rib Right 6",
+        "Rib Right 7",
+        "Rib Right 8",
+        "Rib Right 9",
+        "Rib Right 10",
+        "Rib Right 11",
+        "Rib Right 12",
     ],
 }
 
 ANATOMICAL_REGIONS = {
-    "skeleton": [  # 63
-        "skull",  # 1
-        "claviculas",  # 2
-        "scapulas",  # 2
-        "humeruses",  # 2
-        "vertebraes",  # 24
-        "sternum",  # 1
-        "ribs",  # 24
-        "costal_cartilages",  # 2
-        "hips",  # 2
-        "sacrum",  # 1
-        "femurs",  # 2
+    "Skeleton": [  # 63
+        "Skull",  # 1
+        "Claviculas",  # 2
+        "Scapulas",  # 2
+        "Humeruses",  # 2
+        # "Vertebraes",  # 24
+        "Sternum",  # 1
+        # "Ribs",  # 24
+        # "Costal Cartilages",  # 2
+        "Hips",  # 2
+        "Sacrum",  # 1
+        "Femurs",  # 2
     ],
-    "cardiovascular_system": [  # 17
-        "common_carotid_arteries",  # 2
-        "brachiocephalic_veins",  # 2
-        "subclavian_arteries",  # 2
-        "brachiocephalic_trunk",  # 1
-        "pulmonary_vein",  # 1
-        "vena_cavas",  # 2
-        "atrial_appendage_left",  # 1
-        "aorta",  # 1
-        "portal_vein_and_splenic_vein",  # 1
-        "iliac_arteries",  # 2
-        "iliac_venas",  # 2
+    "Cardiovascular System": [  # 17
+        "Common Carotid Arteries",  # 2
+        "Brachiocephalic Veins",  # 2
+        "Subclavian Arteries",  # 2
+        # "Brachiocephalic Trunk",  # 1
+        "Pulmonary Vein",  # 1
+        "Vena Cavas",  # 2
+        # "Atrial Appendage Left",  # 1
+        "Aorta",  # 1
+        # "Portal Vein and Splenic Vein",  # 1
+        "Iliac Arteries",  # 2
+        "Iliac Venas",  # 2
     ],
-    "other_organs": [  # 21
-        "brain",
-        "spinal_cord",
-        "thyroid_gland",
-        "trachea",
-        "lungs",  # 5
-        "heart",
-        "adrenal_glands",  # 2
-        "spleen",
-        "liver",
-        # "gallbladder",
-        "kidneys",  # 2
-        # "kidney_cysts",  # 2
-        "pancreas",
-        # "prostate",
+    "Other Organs": [  # 21
+        # "Brain",
+        "Spinal Cord",
+        "Thyroid Gland",
+        # "Trachea",
+        "Lungs",  # 5
+        "Heart",
+        # "Adrenal Glands",  # 2
+        "Spleen",
+        "Liver",
+        # "Gallbladder",
+        "Kidneys",  # 2
+        # "Kidney Cysts",  # 2
+        "Pancreas",
+        # "Prostate",
     ],
-    "gastrointestinal_tract": [  # 6
-        "esophagus",
-        "stomach",
-        "duodenum",
-        "small_bowel",
-        "colon",
-        "urinary_bladder",
+    "Gastrointestinal Tract": [  # 6
+        "Esophagus",
+        "Stomach",
+        "Duodenum",
+        "Small Bowel",
+        "Colon",
+        "Urinary Bladder",
     ],
-    "muscles": [  # 10
-        "autochthons",  # 2
-        "iliopsoas",  # 2
-        "gluteus",  # 6
+    "Muscles": [  # 10
+        "Autochthons",  # 2
+        "Iliopsoas",  # 2
+        "Gluteus",  # 6
     ],
 }
 
@@ -399,11 +399,13 @@ ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_ANATOMICAL_STRUCTURE
 
 MODEL_DATASET_IDS_TO_NAMES = {
     1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    9: "Dataset009_Renji_uExplorer-num_train=378-num_test=50_NAC",
 }
 
 TEST_DATASET_IDS_TO_NAMES = {
     0: "Dataset000_Bern_Quadra-num_train=0-num_test=25_NAC",
     1: "Dataset001_SH_uExplorer-num_train=0-num_test=25_NAC",
+    # 1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
     2: "Dataset002_Bern_Quadra_UHS-num_train=0-num_test=21_NAC",
     3: "Dataset003_Bern_Vision600-num_train=0-num_test=52_NAC",
     4: "Dataset004_SH_GE_Discovery-num_train=0-num_test=104_NAC",
@@ -411,10 +413,15 @@ TEST_DATASET_IDS_TO_NAMES = {
     6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
     7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
     8: "Dataset008_SH_Vision450_cross_tracer-num_train=0-num_test=41_NAC",
+    10: "Dataset010_Renji_uExplorer_dynamic-num_train=0-num_test=276_NAC",
+    11: "Dataset011_Renji_uExplorer_dynamic-num_train=0-num_test=276_STATIC",
 }
 
 TEST_DATASETS_TO_IDS = {
-    "internal": [0, 1],
+    "internal": [
+        0,
+        1,
+    ],
     "cross_scanner": [
         2,
         3,
@@ -423,4 +430,6 @@ TEST_DATASETS_TO_IDS = {
         6,
     ],
     "cross_tracer": [7, 8],
+    "dynamic": [10],
+    "dynamic_static": [11],
 }
