@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from typing import List
+from typing import Optional
 
 import fire
 import pandas as pd
@@ -8,6 +9,7 @@ from loguru import logger
 from nnunetv2.dataset_conversion.generate_dataset_json import generate_dataset_json
 
 from pet_seg.settings import ANATOMICAL_STRUCTURES_TO_INDEX
+from pet_seg.settings import MERGED_ANATOMICAL_STRUCTURES_TO_INDEX
 
 NNUNET_RAW_DIR = Path(os.environ["nnUNet_raw"])
 
@@ -19,6 +21,8 @@ def main():
 def convert_data_for_nnunet(
     data_csv_path: str,
     pet_type: str = "nac",
+    use_merged_seg: bool = False,
+    dataset_id: Optional[int] = None,
 ):
     """Converts data for nnUNet.
 
@@ -27,6 +31,8 @@ def convert_data_for_nnunet(
     Args:
         data_csv_path (str): Path to the CSV file containing the data.
         pet_type (str): PET type to use. Can be "ac" or "nac". Defaults to "nac".
+        use_merged_seg (bool): Whether to use the merged segmentation. Defaults to False.
+        dataset_id (Optional[int]): ID of the dataset. If not provided, the next available ID is used.
     """
     data_csv_path = Path(data_csv_path)
 
@@ -36,13 +42,14 @@ def convert_data_for_nnunet(
     df_test = df[df["stage"] == "test"]
 
     # Create dataset name consisting of ID (a three digit integer) + freely chosen name
-    existing_dataset_ids = [
-        int(path.name.split("_")[0].replace("Dataset", "")) for path in sorted(NNUNET_RAW_DIR.iterdir())
-    ]
-    if len(existing_dataset_ids) > 0:
-        dataset_id = existing_dataset_ids[-1] + 1
-    else:
-        dataset_id = 1
+    if dataset_id is None:
+        existing_dataset_ids = [
+            int(path.name.split("_")[0].replace("Dataset", "")) for path in sorted(NNUNET_RAW_DIR.iterdir())
+        ]
+        if len(existing_dataset_ids) > 0:
+            dataset_id = existing_dataset_ids[-1] + 1
+        else:
+            dataset_id = 1
 
     dataset_name = f"Dataset{dataset_id:03d}_{data_csv_path.stem}_{pet_type.upper()}"
 
@@ -64,7 +71,7 @@ def convert_data_for_nnunet(
         labels_tr_dir = dataset_raw_dir / "labelsTr"
         labels_tr_dir.mkdir(exist_ok=True)
 
-        create_symlinks(df_train["organ_seg"].values, nnunet_dir=labels_tr_dir)
+        create_symlinks(df_train[f"organ_seg{'_merged' if use_merged_seg else ''}"].values, nnunet_dir=labels_tr_dir)
         logger.debug(f"Created {len(list(labels_tr_dir.iterdir()))} symlinks in {labels_tr_dir}")
 
     # Test images
@@ -78,13 +85,13 @@ def convert_data_for_nnunet(
     labels_ts_dir = dataset_raw_dir / "labelsTs"
     labels_ts_dir.mkdir(exist_ok=True)
 
-    create_symlinks(df_test["organ_seg"].values, nnunet_dir=labels_ts_dir)
+    create_symlinks(df_test[f"organ_seg{'_merged' if use_merged_seg else ''}"].values, nnunet_dir=labels_ts_dir)
     logger.debug(f"Created {len(list(labels_ts_dir.iterdir()))} symlinks in {labels_ts_dir}")
 
     generate_dataset_json(
         output_folder=str(dataset_raw_dir),
         channel_names={0: pet_type.upper()},
-        labels=ANATOMICAL_STRUCTURES_TO_INDEX,
+        labels=MERGED_ANATOMICAL_STRUCTURES_TO_INDEX if use_merged_seg else ANATOMICAL_STRUCTURES_TO_INDEX,
         num_training_cases=num_training_cases,
         file_ending=".nii.gz",
         dataset_name=dataset_name,

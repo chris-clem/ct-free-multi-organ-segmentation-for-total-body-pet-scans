@@ -38,8 +38,17 @@ def create_data_csv(
             ac_path = patient_dir / "AC.nii.gz"
             nac_path = patient_dir / "NAC.nii.gz"
             ts_seg_path = patient_dir / "organ_TS_seg.nii.gz"
+            ts_seg_merged_path = patient_dir / "organ_TS_seg_merged.nii.gz"
 
-            if not all([ct_path.exists(), ac_path.exists(), nac_path.exists(), ts_seg_path.exists()]):
+            if not all(
+                [
+                    ct_path.exists(),
+                    ac_path.exists(),
+                    nac_path.exists(),
+                    ts_seg_path.exists(),
+                    ts_seg_merged_path.exists(),
+                ]
+            ):
                 logger.warning(f"Skipping {patient_id} because not all files exist")
                 continue
 
@@ -48,6 +57,7 @@ def create_data_csv(
             data["pet_ac"].append(ac_path)
             data["pet_nac"].append(nac_path)
             data["organ_seg"].append(ts_seg_path)
+            data["organ_seg_merged"].append(ts_seg_merged_path)
 
             # Add stage
             if all_test or patient_id.split("_")[-1] in TEST_PATIENT_IDS[scanner]:

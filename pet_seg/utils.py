@@ -9,6 +9,7 @@ import scipy
 from pet_seg.settings import ANATOMICAL_REGIONS
 from pet_seg.settings import DATA_ROOT_DIR
 from pet_seg.settings import INDEX_TO_ANATOMICAL_STRUCTURES
+from pet_seg.settings import INDEX_TO_MERGED_ANATOMICAL_STRUCTURES
 from pet_seg.settings import MERGED_ANATOMICAL_STRUCTURES
 from pet_seg.settings import SCANNER_TO_STAGE
 
@@ -21,11 +22,12 @@ def get_sorted_patient_dirs(scanner: str) -> list[Path]:
     return sorted(get_scanner_dir(scanner).iterdir())
 
 
-def create_patient_dice_scores_df(nnunet_summary_path):
+def create_patient_dice_scores_df(nnunet_summary_path, use_merged_seg):
     """Create a DataFrame containing the organ dice scores for each patient.
 
     Args:
         nnunet_summary_path (Path): Path to nnUNet summary JSON file.
+        use_merged_seg (bool): Whether to use the merged segmentation. Defaults to False.
     """
     with open(nnunet_summary_path, "r") as f:
         nnunet_summary = json.load(f)
@@ -37,7 +39,10 @@ def create_patient_dice_scores_df(nnunet_summary_path):
         patient_dice_scores["dataset"].append(nnunet_summary_path.parent.name)
         patient_dice_scores["patient_id"].append(patient_id)
 
-        for index, anatomical_structure in INDEX_TO_ANATOMICAL_STRUCTURES.items():
+        index_to_anatomical_structures = (
+            INDEX_TO_MERGED_ANATOMICAL_STRUCTURES if use_merged_seg else INDEX_TO_ANATOMICAL_STRUCTURES
+        )
+        for index, anatomical_structure in index_to_anatomical_structures.items():
             if index == 0:
                 continue
 
@@ -46,9 +51,10 @@ def create_patient_dice_scores_df(nnunet_summary_path):
 
     patient_dice_scores = pd.DataFrame(patient_dice_scores)
 
-    # Add merged anatomical structures means
-    for anatomical_structure, merged_anatomical_structures in MERGED_ANATOMICAL_STRUCTURES.items():
-        patient_dice_scores[anatomical_structure] = patient_dice_scores[merged_anatomical_structures].mean(axis=1)
+    if not use_merged_seg:
+        # Add merged anatomical structures means
+        for anatomical_structure, merged_anatomical_structures in MERGED_ANATOMICAL_STRUCTURES.items():
+            patient_dice_scores[anatomical_structure] = patient_dice_scores[merged_anatomical_structures].mean(axis=1)
 
     # Add anatomical regions means
     for anatomical_region, anatomical_structures in ANATOMICAL_REGIONS.items():

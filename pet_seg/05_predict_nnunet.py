@@ -24,6 +24,7 @@ def main():
 
 def predict_nnunet(
     model_dataset_id: int = 1,
+    trainer: str = "nnUNetTrainerNoMirroring",
     config: str = "3d_fullres",
     folds: str = "0 1 2 3 4",
     checkpoint_name: str = "checkpoint_best",
@@ -37,7 +38,8 @@ def predict_nnunet(
 
     Args:
         model_dataset_id (int): Model trained on the given dataset to use.
-        config (str): nnUNet config to use. Can be "2d" or "3d_cascade_fullres".
+        trainer (str): Trainer to use.
+        config (str): nnUNet config to use.
         folds (str): Folds to use, separated by spaces.
         checkpoint_name (str): Name of the checkpoint to use. Can be "checkpoint_best" or "checkpoint_latest".
         test_datasets (str): Test datasets to predict on. Can be "internal", "cross_scanner" or "cross_tracer".
@@ -46,7 +48,7 @@ def predict_nnunet(
         use_optimized_labels (bool): Whether to use optimized labels.
     """
     model_dataset_name = MODEL_DATASET_IDS_TO_NAMES[model_dataset_id]
-    model_results_dir = NNUNET_RESULTS_DIR / model_dataset_name / f"nnUNetTrainerNoMirroring__nnUNetPlans__{config}"
+    model_results_dir = NNUNET_RESULTS_DIR / model_dataset_name / f"{trainer}__nnUNetPlans__{config}"
 
     for test_dataset_id in tqdm(TEST_DATASETS_TO_IDS[test_datasets]):
         test_dataset_name = TEST_DATASET_IDS_TO_NAMES[test_dataset_id]
@@ -105,7 +107,7 @@ def predict_nnunet(
                         f"-i {tmp_dir} "
                         f"-o {tmp_dir} "
                         f"-d {model_dataset_name} "
-                        "-tr nnUNetTrainerNoMirroring "
+                        f"-tr {trainer} "
                         f"-c {config} "
                         f"-f {folds} "
                         f"-chk {checkpoint_name}.pth "

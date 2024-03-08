@@ -20,9 +20,11 @@ def main():
 
 def extract_nnunet_results(
     model_dataset_id: int = 1,
+    trainer: str = "nnUNetTrainerNoMirroring",
     config: str = "3d_fullres",
     folds: str = "0 1 2 3 4",
     test_datasets: str = "internal",
+    use_merged_seg: bool = False,
     use_optimized_labels: bool = False,
 ):
     """Extract nnUNet results from the predictions of the given model and test datasets.
@@ -31,16 +33,18 @@ def extract_nnunet_results(
 
     Args:
         model_dataset_id (int): Model trained on the given dataset to use.
+        trainer (str): Trainer to use.
         config (str): nnUNet config to use. Can be "2d" or "3d_cascade_fullres".
         folds (str): Folds to use, separated by spaces.
         test_datasets (str): Test datasets to predict on. Can be "internal", "cross_scanner" or "cross_tracer".
+        use_merged_seg (bool): Whether to use the merged segmentation. Defaults to False.
         use_optimized_labels (bool): Whether to use optimized labels.
     """
 
     # Get dirs
     model_dataset_name = MODEL_DATASET_IDS_TO_NAMES[model_dataset_id]
     model_results_dir = NNUNET_RESULTS_DIR / model_dataset_name
-    config_dir = model_results_dir / f"nnUNetTrainerNoMirroring__nnUNetPlans__{config}"
+    config_dir = model_results_dir / f"{trainer}__nnUNetPlans__{config}"
     fold_str = f"fold_{folds.replace(' ', '_')}"
     predictions_dir = config_dir / fold_str / "predictions"
 
@@ -61,7 +65,7 @@ def extract_nnunet_results(
         dicom_header_df = pd.read_csv(dicom_header_csv_path)
 
         # Create patient dice scores df
-        patient_dice_scores = create_patient_dice_scores_df(summary_path)
+        patient_dice_scores = create_patient_dice_scores_df(summary_path, use_merged_seg)
 
         # Merge with dicom header
         patient_dice_scores = patient_dice_scores.merge(dicom_header_df, left_on="patient_id", right_on="PID")
@@ -73,7 +77,7 @@ def extract_nnunet_results(
     patient_dice_scores_df.to_csv(
         RESULTS_DIR
         / "patient_dice_scores"
-        / f"{model_dataset_name}_{config}_{fold_str}_{test_datasets}{'_optimized' if use_optimized_labels else ''}.csv",
+        / f"{model_dataset_name}__{trainer}__{config}__{fold_str}__{test_datasets}{'_optimized' if use_optimized_labels else ''}.csv",  # noqa
         index=False,
     )
 

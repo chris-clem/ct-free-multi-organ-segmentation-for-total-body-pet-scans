@@ -17,14 +17,20 @@ def main():
 
 
 def plot_nnunet_test_results():
-    for patient_dice_scores_path in (RESULTS_DIR / "patient_dice_scores").glob("*_tracer.csv"):
+    for patient_dice_scores_path in (RESULTS_DIR / "patient_dice_scores").glob("Dataset001*_cross_tracer.csv"):
         st.write(f"# {patient_dice_scores_path.stem}")
         dice_scores_df = pd.read_csv(patient_dice_scores_path)
 
+        # Add scanner column: if Anonymous in patient_id, then "uExplorer" else "Quadra"
+        dice_scores_df["scanner"] = dice_scores_df["patient_id"].apply(
+            lambda x: "uExplorer" if "Anonymous" in x else "Quadra"
+        )
+
+        # Add scanner to dataset column
+        dice_scores_df["dataset"] = dice_scores_df["dataset"] + "-" + dice_scores_df["scanner"]
+
         if "cross_tracer" in patient_dice_scores_path.stem:
             dice_scores_df["dataset"] = dice_scores_df["dataset"] + "-" + dice_scores_df["radionuclide_name"]
-        # else:
-        #     continue
 
         dataset_dice_scores_dfs = []
         for unique_dataset in dice_scores_df["dataset"].unique():
