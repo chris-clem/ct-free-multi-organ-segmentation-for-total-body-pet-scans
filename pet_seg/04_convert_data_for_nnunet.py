@@ -1,15 +1,17 @@
 import os
 from pathlib import Path
-from typing import List
-from typing import Optional
+from typing import List, Optional
 
 import fire
 import pandas as pd
 from loguru import logger
 from nnunetv2.dataset_conversion.generate_dataset_json import generate_dataset_json
 
-from pet_seg.settings import ANATOMICAL_STRUCTURES_TO_INDEX
-from pet_seg.settings import MERGED_ANATOMICAL_STRUCTURES_TO_INDEX
+from pet_seg.settings import (
+    ANATOMICAL_STRUCTURES_TO_INDEX,
+    MERGED_ANATOMICAL_STRUCTURES_TO_INDEX,
+    OPTIMIZED_LABELS_TO_INDEX,
+)
 
 NNUNET_RAW_DIR = Path(os.environ["nnUNet_raw"])
 
@@ -22,6 +24,7 @@ def convert_data_for_nnunet(
     data_csv_path: str,
     pet_type: str = "nac",
     use_merged_seg: bool = False,
+    use_optimized_seg: bool = False,
     dataset_id: Optional[int] = None,
 ):
     """Converts data for nnUNet.
@@ -34,10 +37,16 @@ def convert_data_for_nnunet(
         use_merged_seg (bool): Whether to use the merged segmentation. Defaults to False.
         dataset_id (Optional[int]): ID of the dataset. If not provided, the next available ID is used.
     """
-    data_csv_path = Path(data_csv_path)
-
     # Load data
+    data_csv_path = Path(data_csv_path)
     df = pd.read_csv(data_csv_path)
+
+    if use_optimized_seg:
+        # Filter out patients without optimized segmentation
+        df = df[df["optimized_seg"].notnull()]
+        df["stage"] = "train"
+        df["organ_seg"] = df["optimized_seg"]
+
     df_train = df[df["stage"] == "train"]
     df_test = df[df["stage"] == "test"]
 
@@ -51,7 +60,12 @@ def convert_data_for_nnunet(
         else:
             dataset_id = 1
 
-    dataset_name = f"Dataset{dataset_id:03d}_{data_csv_path.stem}_{pet_type.upper()}"
+    dataset_name = (
+        f"Dataset{dataset_id:03d}_"
+        f"{data_csv_path.stem}_{pet_type.upper()}"
+        f"{'_merged_labels' if use_merged_seg else ''}"
+        f"{'_optimized_seg' if use_optimized_seg else ''}"
+    )
 
     logger.debug(f"{dataset_name=}")
 
@@ -88,10 +102,17 @@ def convert_data_for_nnunet(
     create_symlinks(df_test[f"organ_seg{'_merged' if use_merged_seg else ''}"].values, nnunet_dir=labels_ts_dir)
     logger.debug(f"Created {len(list(labels_ts_dir.iterdir()))} symlinks in {labels_ts_dir}")
 
+    if use_merged_seg:
+        labels = MERGED_ANATOMICAL_STRUCTURES_TO_INDEX
+    elif use_optimized_seg:
+        labels = OPTIMIZED_LABELS_TO_INDEX
+    else:
+        labels = ANATOMICAL_STRUCTURES_TO_INDEX
+
     generate_dataset_json(
         output_folder=str(dataset_raw_dir),
         channel_names={0: pet_type.upper()},
-        labels=MERGED_ANATOMICAL_STRUCTURES_TO_INDEX if use_merged_seg else ANATOMICAL_STRUCTURES_TO_INDEX,
+        labels=labels,
         num_training_cases=num_training_cases,
         file_ending=".nii.gz",
         dataset_name=dataset_name,
@@ -114,12 +135,12 @@ def create_symlinks(
         nnunet_dir (Path): nnUNet target directory (imagesTr or labelsTr).
     """
     for image_path in image_paths:
-        is_dynamic = "dynamic" in image_path
+        is_dynamic = "dynamic" in image_path and not "static" in image_path
         is_image = "NASC" in image_path
 
         image_path = Path(image_path)
 
-        patient_id = image_path.parent.parent.name if is_image else image_path.parent.name
+        patient_id = image_path.parent.parent.name if is_dynamic else image_path.parent.name
         image_name = f"{patient_id}_{image_path.name.split('.')[0]}" if is_dynamic else patient_id
 
         nnunet_image_name = f"{image_name}.nii.gz" if "label" in nnunet_dir.name else f"{image_name}_0000.nii.gz"
