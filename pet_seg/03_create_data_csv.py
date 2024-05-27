@@ -5,8 +5,7 @@ import pandas as pd
 from loguru import logger
 from tqdm import tqdm
 
-from pet_seg.settings import DATA_CSVS_DIR
-from pet_seg.settings import TEST_PATIENT_IDS
+from pet_seg.settings import DATA_CSVS_DIR, TEST_PATIENT_IDS
 from pet_seg.utils import get_sorted_patient_dirs
 
 
@@ -39,6 +38,7 @@ def create_data_csv(
             nac_path = patient_dir / "NAC.nii.gz"
             ts_seg_path = patient_dir / "organ_TS_seg.nii.gz"
             ts_seg_merged_path = patient_dir / "organ_TS_seg_merged.nii.gz"
+            optimized_seg_path = patient_dir / "optimized_seg.nii.gz"
 
             if not all(
                 [
@@ -61,11 +61,11 @@ def create_data_csv(
 
             # Add stage
             if all_test or patient_id.split("_")[-1] in TEST_PATIENT_IDS[scanner]:
-                stage = "test"
+                data["stage"].append("test")
+                data["optimized_seg"].append(optimized_seg_path)
             else:
-                stage = "train"
-
-            data["stage"].append(stage)
+                data["stage"].append("train")
+                data["optimized_seg"].append(None)
 
     # Save dataframe
     df = pd.DataFrame(data)
@@ -75,6 +75,10 @@ def create_data_csv(
     file_path = DATA_CSVS_DIR / f"{scanners}-{num_train=}-{num_test=}.csv"
     df.to_csv(file_path, index=False)
     logger.info(f"Created {file_path}.")
+
+    # Count optimized_segs
+    num_optimized_segs = df["optimized_seg"].notnull().sum()
+    logger.info(f"Number of optimized segmentations: {num_optimized_segs}")
 
 
 if __name__ == "__main__":
