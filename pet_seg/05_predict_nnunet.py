@@ -10,9 +10,11 @@ from loguru import logger
 from nnunetv2.evaluation.evaluate_predictions import compute_metrics_on_folder2
 from tqdm import tqdm
 
-from pet_seg.settings import MODEL_DATASET_IDS_TO_NAMES
-from pet_seg.settings import TEST_DATASET_IDS_TO_NAMES
-from pet_seg.settings import TEST_DATASETS_TO_IDS
+from pet_seg.settings import (
+    MODEL_DATASET_IDS_TO_NAMES,
+    TEST_DATASET_IDS_TO_NAMES,
+    TEST_DATASETS_TO_IDS,
+)
 
 NNUNET_RAW_DIR = Path(os.environ["nnUNet_raw"])
 NNUNET_RESULTS_DIR = Path(os.environ["nnUNet_results"])
@@ -63,7 +65,7 @@ def predict_nnunet(
             for image_path in tqdm(sorted(images_dir.glob("*.nii.gz"))):
                 image_name = image_path.name
 
-                pred_path = output_dir / image_name.replace("_0000", "")
+                pred_path = output_dir / image_name.replace("_0000.nii.gz", ".nii.gz")
 
                 if pred_path.exists():
                     logger.debug(f"Prediction already exists for {image_name}")
