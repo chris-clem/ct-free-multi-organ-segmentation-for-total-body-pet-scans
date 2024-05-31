@@ -1,17 +1,16 @@
 import os
 from pathlib import Path
-from typing import List, Optional
+from typing import List
+from typing import Optional
 
 import fire
 import pandas as pd
 from loguru import logger
 from nnunetv2.dataset_conversion.generate_dataset_json import generate_dataset_json
 
-from pet_seg.settings import (
-    ANATOMICAL_STRUCTURES_TO_INDEX,
-    MERGED_ANATOMICAL_STRUCTURES_TO_INDEX,
-    OPTIMIZED_LABELS_TO_INDEX,
-)
+from pet_seg.settings import ANATOMICAL_STRUCTURES_TO_INDEX
+from pet_seg.settings import MERGED_ANATOMICAL_STRUCTURES_TO_INDEX
+from pet_seg.settings import OPTIMIZED_LABELS_TO_INDEX
 
 NNUNET_RAW_DIR = Path(os.environ["nnUNet_raw"])
 
@@ -23,8 +22,7 @@ def main():
 def convert_data_for_nnunet(
     data_csv_path: str,
     pet_type: str = "nac",
-    use_merged_seg: bool = False,
-    use_optimized_seg: bool = False,
+    seg_type: str = "ts",
     dataset_id: Optional[int] = None,
 ):
     """Converts data for nnUNet.
@@ -34,18 +32,21 @@ def convert_data_for_nnunet(
     Args:
         data_csv_path (str): Path to the CSV file containing the data.
         pet_type (str): PET type to use. Can be "ac" or "nac". Defaults to "nac".
-        use_merged_seg (bool): Whether to use the merged segmentation. Defaults to False.
+        seg_type (str): Segmentation type to use. Can be "moose", "moose_optimized", "ts", or "ts_merged".
         dataset_id (Optional[int]): ID of the dataset. If not provided, the next available ID is used.
     """
+    use_optimized_seg = seg_type == "moose_optimized"
+    use_merged_seg = seg_type == "ts_merged"
+
     # Load data
     data_csv_path = Path(data_csv_path)
     df = pd.read_csv(data_csv_path)
 
     if use_optimized_seg:
         # Filter out patients without optimized segmentation
-        df = df[df["optimized_seg"].notnull()]
+        df = df[df["seg_moose_optimized"].notnull()]
+        # Set stage of rest of patients to train (optimized seg normally used for testing)
         df["stage"] = "train"
-        df["organ_seg"] = df["optimized_seg"]
 
     df_train = df[df["stage"] == "train"]
     df_test = df[df["stage"] == "test"]
@@ -62,9 +63,8 @@ def convert_data_for_nnunet(
 
     dataset_name = (
         f"Dataset{dataset_id:03d}_"
-        f"{data_csv_path.stem}_{pet_type.upper()}"
-        f"{'_merged_labels' if use_merged_seg else ''}"
-        f"{'_optimized_seg' if use_optimized_seg else ''}"
+        f"{data_csv_path.name.split('-num_train')[0]}-num_train={len(df_train)}-num_test={len(df_test)}_"
+        f"{pet_type.upper()}-{seg_type}"
     )
 
     logger.debug(f"{dataset_name=}")
@@ -85,7 +85,7 @@ def convert_data_for_nnunet(
         labels_tr_dir = dataset_raw_dir / "labelsTr"
         labels_tr_dir.mkdir(exist_ok=True)
 
-        create_symlinks(df_train[f"organ_seg{'_merged' if use_merged_seg else ''}"].values, nnunet_dir=labels_tr_dir)
+        create_symlinks(df_train[f"seg_{seg_type}"].values, nnunet_dir=labels_tr_dir)
         logger.debug(f"Created {len(list(labels_tr_dir.iterdir()))} symlinks in {labels_tr_dir}")
 
     # Test images
@@ -99,7 +99,7 @@ def convert_data_for_nnunet(
     labels_ts_dir = dataset_raw_dir / "labelsTs"
     labels_ts_dir.mkdir(exist_ok=True)
 
-    create_symlinks(df_test[f"organ_seg{'_merged' if use_merged_seg else ''}"].values, nnunet_dir=labels_ts_dir)
+    create_symlinks(df_test[f"pet_{pet_type}"].values, nnunet_dir=labels_ts_dir)
     logger.debug(f"Created {len(list(labels_ts_dir.iterdir()))} symlinks in {labels_ts_dir}")
 
     if use_merged_seg:
@@ -135,8 +135,7 @@ def create_symlinks(
         nnunet_dir (Path): nnUNet target directory (imagesTr or labelsTr).
     """
     for image_path in image_paths:
-        is_dynamic = "dynamic" in image_path and not "static" in image_path
-        is_image = "NASC" in image_path
+        is_dynamic = "dynamic" in image_path and "static" not in image_path
 
         image_path = Path(image_path)
 
