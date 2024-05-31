@@ -40,6 +40,7 @@ def create_data_csv(
             seg_moose_optimized_path = patient_dir / "optimized_seg.nii.gz"  # array[440, 440, 644] x∈[0., 12.000]
             seg_ts_path = patient_dir / "organ_TS_seg.nii.gz"  # array[440, 440, 644] x∈[0., 117.000]
             seg_ts_merged_path = patient_dir / "organ_TS_seg_merged.nii.gz"  # array[440, 440, 644] x∈[0., 45.000]
+            seg_ts_like_optimized_path = patient_dir / "organ_TS_seg_like_optimized.nii.gz"
 
             if not all(
                 [
@@ -48,6 +49,7 @@ def create_data_csv(
                     seg_moose_path.exists(),
                     seg_ts_path.exists(),
                     seg_ts_merged_path.exists(),
+                    seg_ts_like_optimized_path.exists(),
                 ]
             ):
                 logger.warning(f"Skipping {patient_id} because not all files exist")
@@ -59,6 +61,7 @@ def create_data_csv(
             data["seg_moose"].append(seg_moose_path)
             data["seg_ts"].append(seg_ts_path)
             data["seg_ts_merged"].append(seg_ts_merged_path)
+            data["seg_ts_like_optimized"].append(seg_ts_like_optimized_path)
 
             # Add stage
             if all_test or patient_id.split("_")[-1] in TEST_PATIENT_IDS[scanner]:
