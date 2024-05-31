@@ -25,6 +25,7 @@ def main():
 def predict_nnunet(
     model_dataset_id: int = 1,
     trainer: str = "nnUNetTrainerNoMirroring",
+    plans: str = "nnUNetPlans",
     config: str = "3d_fullres",
     folds: str = "0 1 2 3 4",
     checkpoint_name: str = "checkpoint_best",
@@ -48,7 +49,7 @@ def predict_nnunet(
         use_optimized_labels (bool): Whether to use optimized labels.
     """
     model_dataset_name = MODEL_DATASET_IDS_TO_NAMES[model_dataset_id]
-    model_results_dir = NNUNET_RESULTS_DIR / model_dataset_name / f"{trainer}__nnUNetPlans__{config}"
+    model_results_dir = NNUNET_RESULTS_DIR / model_dataset_name / f"{trainer}__{plans}__{config}"
 
     for test_dataset_id in tqdm(TEST_DATASETS_TO_IDS[test_datasets]):
         test_dataset_name = TEST_DATASET_IDS_TO_NAMES[test_dataset_id]
@@ -108,11 +109,13 @@ def predict_nnunet(
                         f"-o {tmp_dir} "
                         f"-d {model_dataset_name} "
                         f"-tr {trainer} "
+                        f"-p {plans} "
                         f"-c {config} "
                         f"-f {folds} "
                         f"-chk {checkpoint_name}.pth "
-                        f"-npp 1 "
-                        f"-nps 1 "
+                        "--disable_tta "
+                        "-npp 1 "
+                        "-nps 1 "
                     )
 
                     os.system(cmd)

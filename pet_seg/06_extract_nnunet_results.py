@@ -3,6 +3,7 @@ from pathlib import Path
 
 import fire
 import pandas as pd
+from loguru import logger
 
 from pet_seg.settings import DICOM_HEADERS_DIR
 from pet_seg.settings import MODEL_DATASET_IDS_TO_NAMES
@@ -21,6 +22,7 @@ def main():
 def extract_nnunet_results(
     model_dataset_id: int = 1,
     trainer: str = "nnUNetTrainerNoMirroring",
+    plans: str = "nnUNetPlans",
     config: str = "3d_fullres",
     folds: str = "0 1 2 3 4",
     test_datasets: str = "internal",
@@ -44,7 +46,7 @@ def extract_nnunet_results(
     # Get dirs
     model_dataset_name = MODEL_DATASET_IDS_TO_NAMES[model_dataset_id]
     model_results_dir = NNUNET_RESULTS_DIR / model_dataset_name
-    config_dir = model_results_dir / f"{trainer}__nnUNetPlans__{config}"
+    config_dir = model_results_dir / f"{trainer}__{plans}__{config}"
     fold_str = f"fold_{folds.replace(' ', '_')}"
     predictions_dir = config_dir / fold_str / "predictions"
 
@@ -74,12 +76,14 @@ def extract_nnunet_results(
 
     # Save patient dice scores df
     patient_dice_scores_df = pd.concat(patient_dice_scores_dfs)
-    patient_dice_scores_df.to_csv(
+    output_file_path = (
         RESULTS_DIR
         / "patient_dice_scores"
-        / f"{model_dataset_name}__{trainer}__{config}__{fold_str}__{test_datasets}{'_optimized' if use_optimized_labels else ''}.csv",  # noqa
-        index=False,
+        / f"{model_dataset_name}__{trainer}__{plans}__{config}__{fold_str}__{test_datasets}{'_optimized' if use_optimized_labels else ''}.csv"  # noqa: E501
     )
+
+    patient_dice_scores_df.to_csv(output_file_path, index=False)
+    logger.info(f"Created {output_file_path}")
 
 
 if __name__ == "__main__":
