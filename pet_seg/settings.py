@@ -485,5 +485,5 @@ TEST_DATASETS_TO_IDS = {
     "cross_tracer": [7, 8],
     "dynamic": [10],
     "dynamic_static": [11],
-    "internal_combined": [100],
+    "internal_merged": [100],
 }
