@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import numpy as np
+
 # Paths
 DATA_ROOT_DIR = Path.home() / "Data" / "ct-free-multi-organ-segmentation-for-total-body-pet-scans"
 DATA_CSVS_DIR = DATA_ROOT_DIR / "csvs"
@@ -10,6 +12,8 @@ DICOM_HEADERS_DIR = DATA_ROOT_DIR / "dicom_headers"
 SCANNER_TO_STAGE = {
     "Bern_Quadra": "train",
     "SH_uExplorer": "train",
+    "SH_uExplorer_Renji": "train",
+    "SH_uExplorer_Renji_dynamic": "test",
     "Bern_Quadra_UHS": "test",
     "Bern_Vision600": "test",
     "Bern_Vision600_cross_tracer": "test",
@@ -78,6 +82,7 @@ SH_UEXPLORER_TEST_PATIENT_IDS = [
 TEST_PATIENT_IDS = {
     "Bern_Quadra": BERN_QUADRA_TEST_PATIENT_IDS,
     "SH_uExplorer": SH_UEXPLORER_TEST_PATIENT_IDS,
+    "SH_uExplorer_Renji": [],
 }
 
 INDEX_TO_ANATOMICAL_STRUCTURES = {
@@ -448,33 +453,59 @@ INDEX_TO_MERGED_ANATOMICAL_STRUCTURES = {
 
 MERGED_ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_MERGED_ANATOMICAL_STRUCTURES.items()}
 
+INDEX_TO_OPTIMIZED_LABELS = {
+    0: "background",
+    1: "Adrenal-glands",
+    2: "Aorta",
+    3: "Bladder",
+    4: "Brain",
+    5: "Heart",
+    6: "Kidneys",
+    7: "Liver",
+    8: "Pancreas",
+    9: "Spleen",
+    10: "Thyroid",
+    11: "Inferior-vena-cava",
+    12: "Lung",
+}
+
+OPTIMIZED_LABELS_TO_INDEX = {v: k for k, v in INDEX_TO_OPTIMIZED_LABELS.items()}
+
+
 MODEL_DATASET_IDS_TO_NAMES = {
-    1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
-    9: "Dataset009_Renji_uExplorer-num_train=378-num_test=50_NAC",
+    1: "Dataset001_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    2: "Dataset002_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    # 1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    # 9: "Dataset009_Renji_uExplorer-num_train=378-num_test=50_NAC",
     100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
 }
 
 TEST_DATASET_IDS_TO_NAMES = {
-    0: "Dataset000_Bern_Quadra-num_train=0-num_test=25_NAC",
-    # 1: "Dataset001_SH_uExplorer-num_train=0-num_test=25_NAC",
-    1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
-    2: "Dataset002_Bern_Quadra_UHS-num_train=0-num_test=21_NAC",
-    3: "Dataset003_Bern_Vision600-num_train=0-num_test=52_NAC",
-    4: "Dataset004_SH_GE_Discovery-num_train=0-num_test=104_NAC",
-    5: "Dataset005_SH_UI780-num_train=0-num_test=100_NAC",
-    6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
-    7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
-    8: "Dataset008_SH_Vision450_cross_tracer-num_train=0-num_test=41_NAC",
-    10: "Dataset010_Renji_uExplorer_dynamic-num_train=0-num_test=276_NAC",
-    11: "Dataset011_Renji_uExplorer_dynamic-num_train=0-num_test=276_STATIC",
-    100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    1: "Dataset001_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    2: "Dataset002_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    12: "Dataset012_SH_uExplorer_Renji_dynamic-num_dynamic_frames=12-num_train=0-num_test=228_NAC",
+    13: "Dataset013_SH_uExplorer_Renji_dynamic-num_dynamic_frames=12-num_train=0-num_test=228_STATIC",
+    92: "Dataset092_SH_uExplorer_Renji_dynamic-num_dynamic_frames=92-num_train=0-num_test=1840_NAC",
+    # 0: "Dataset000_Bern_Quadra-num_train=0-num_test=25_NAC",
+    # # 1: "Dataset001_SH_uExplorer-num_train=0-num_test=25_NAC",
+    # 1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    # 2: "Dataset002_Bern_Quadra_UHS-num_train=0-num_test=21_NAC",
+    # 3: "Dataset003_Bern_Vision600-num_train=0-num_test=52_NAC",
+    # 4: "Dataset004_SH_GE_Discovery-num_train=0-num_test=104_NAC",
+    # 5: "Dataset005_SH_UI780-num_train=0-num_test=100_NAC",
+    # 6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
+    # 7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
+    # 8: "Dataset008_SH_Vision450_cross_tracer-num_train=0-num_test=41_NAC",
+    # 10: "Dataset010_Renji_uExplorer_dynamic-num_train=0-num_test=276_NAC",
+    # 11: "Dataset011_Renji_uExplorer_dynamic-num_train=0-num_test=276_STATIC",
+    # 100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
 }
 
 TEST_DATASETS_TO_IDS = {
-    "internal": [
-        # 0,
-        1,
-    ],
+    "internal": [1],
+    # "dynamic_12_frames": [12],
+    # "static_12_frames": [13],
+    # "dynamic_92_frames": [92],
     "cross_scanner": [
         2,
         3,
@@ -486,4 +517,13 @@ TEST_DATASETS_TO_IDS = {
     "dynamic": [10],
     "dynamic_static": [11],
     "internal_merged": [100],
+}
+
+FRAME_TIMES_S = {
+    "F12": [5 * 60] * 12,
+    "F92": [5] * 24 + [30] * 20 + [60] * 48,
+}
+CUM_FRAME_TIMES_S = {
+    "F12": list(np.cumsum(FRAME_TIMES_S["F12"])),
+    "F92": list(np.cumsum(FRAME_TIMES_S["F92"])),
 }

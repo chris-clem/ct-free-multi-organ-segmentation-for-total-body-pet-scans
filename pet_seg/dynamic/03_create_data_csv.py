@@ -14,7 +14,8 @@ def main():
 
 
 def create_data_csv(
-    scanners: str = "Renji_uExplorer_dynamic",
+    scanners: str = "SH_uExplorer_Renji_dynamic",
+    num_dynamic_frames: int = 12,
 ):
     data = defaultdict(list)
 
@@ -24,10 +25,10 @@ def create_data_csv(
 
             ct_path = patient_dir / "CT.nii.gz"
             static_pet_path = patient_dir / "static_PET.nii.gz"
-            ts_seg_path = patient_dir / "organ_TS_seg.nii.gz"
+            ts_seg_path = patient_dir / "ts_seg.nii.gz"
 
-            asc_paths = sorted((patient_dir / "ASC").glob("*.nii.gz"))
-            nasc_paths = sorted((patient_dir / "NASC").glob("*.nii.gz"))
+            asc_paths = sorted((patient_dir / f"F{num_dynamic_frames}_ASC").glob("*.nii.gz"))
+            nasc_paths = sorted((patient_dir / f"F{num_dynamic_frames}_NASC").glob("*.nii.gz"))
 
             assert len(asc_paths) == len(nasc_paths), f"{patient_id} has different number of AC and NAC images"
 
@@ -38,6 +39,7 @@ def create_data_csv(
             for ac_path, nac_path in zip(asc_paths, nasc_paths):
                 data["patient_id"].append(patient_id)
                 data["ct"].append(ct_path)
+                data["pet_static"].append(static_pet_path)
                 data["pet_ac"].append(ac_path)
                 data["pet_nac"].append(nac_path)
                 data["organ_seg"].append(ts_seg_path)
@@ -48,7 +50,7 @@ def create_data_csv(
 
     num_train = (df["stage"] == "train").sum()
     num_test = (df["stage"] == "test").sum()
-    file_path = DATA_CSVS_DIR / f"{scanners}-{num_train=}-{num_test=}.csv"
+    file_path = DATA_CSVS_DIR / f"{scanners}-{num_dynamic_frames=}-{num_train=}-{num_test=}.csv"
     df.to_csv(file_path, index=False)
     logger.info(f"Created {file_path}.")
 

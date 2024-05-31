@@ -64,7 +64,7 @@ def predict_nnunet(
             for image_path in tqdm(sorted(images_dir.glob("*.nii.gz"))):
                 image_name = image_path.name
 
-                pred_path = output_dir / image_name.replace("_0000", "")
+                pred_path = output_dir / image_name.replace("_0000.nii.gz", ".nii.gz")
 
                 if pred_path.exists():
                     logger.debug(f"Prediction already exists for {image_name}")
