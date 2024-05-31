@@ -20,11 +20,11 @@ def resize_ts_seg_to_pet(
     for patient_dir in tqdm(get_sorted_patient_dirs(scanner)):
         patient_id = patient_dir.name
 
-        nac_path = patient_dir / "NAC.nii.gz"
+        pt_path = patient_dir / "NASC.nii.gz"
         ts_seg_path = ts_output_dir / f"{patient_id}.nii.gz"
 
         try:
-            nac_nifti = nib.load(nac_path)
+            pt_nifti = nib.load(pt_path)
             seg_nifti = nib.load(ts_seg_path)
         except Exception as e:
             print(e)
@@ -33,9 +33,9 @@ def resize_ts_seg_to_pet(
         seg_npy = np.array(seg_nifti.dataobj)
 
         target_shape = (
-            seg_npy.shape[0] // (nac_nifti.header.get_zooms()[0] / seg_nifti.header.get_zooms()[0]),
-            seg_npy.shape[1] // (nac_nifti.header.get_zooms()[1] / seg_nifti.header.get_zooms()[1]),
-            nac_nifti.shape[2],
+            seg_npy.shape[0] // (pt_nifti.header.get_zooms()[0] / seg_nifti.header.get_zooms()[0]),
+            seg_npy.shape[1] // (pt_nifti.header.get_zooms()[1] / seg_nifti.header.get_zooms()[1]),
+            pt_nifti.shape[2],
         )
 
         seg_npy = skitran.resize(
@@ -51,10 +51,10 @@ def resize_ts_seg_to_pet(
         seg_npy = np.around(seg_npy)
         seg_npy = seg_npy.astype("uint8")
 
-        seg_npy = cut_or_pad(nac_nifti, seg_npy)
+        seg_npy = cut_or_pad(pt_nifti, seg_npy)
 
-        seg_nifti = nib.Nifti1Image(seg_npy, nac_nifti.affine)
-        nib.save(seg_nifti, patient_dir / "organ_TS_seg.nii.gz")
+        seg_nifti = nib.Nifti1Image(seg_npy, pt_nifti.affine)
+        nib.save(seg_nifti, patient_dir / "ts_seg.nii.gz")
 
 
 def cut_or_pad(nac_nifti, seg_npy):
