@@ -7,6 +7,7 @@ from tqdm import tqdm
 
 from pet_seg.settings import ANATOMICAL_STRUCTURES_TO_INDEX
 from pet_seg.settings import INDEX_TO_ANATOMICAL_STRUCTURES
+from pet_seg.settings import INDEX_TO_OPTIMIZED_LABELS
 from pet_seg.settings import MERGED_ANATOMICAL_STRUCTURES
 from pet_seg.settings import MERGED_ANATOMICAL_STRUCTURES_TO_INDEX
 from pet_seg.utils import get_sorted_patient_dirs
@@ -27,41 +28,67 @@ def merge_ts_seg_labels(
 
 
 def merge_one_ts_seg(ts_seg_path):
-    # Load
-    try:
-        ts_seg_nii = nib.load(ts_seg_path)
-    except FileNotFoundError:
-        print(f"File not found: {ts_seg_path}")
-        return
+    # Create TS seg with merged labels
+    ts_seg_merged_path = ts_seg_path.parent / f"{ts_seg_path.name.split('.')[0]}_merged.nii.gz"
+    if not ts_seg_merged_path.exists():
+        # Load
+        try:
+            ts_seg_nii = nib.load(ts_seg_path)
+        except FileNotFoundError:
+            print(f"File not found: {ts_seg_path}")
+            return
 
-    ts_seg_npy = ts_seg_nii.get_fdata()
+        ts_seg_npy = ts_seg_nii.get_fdata()
 
-    ts_seg_merged_npy = np.zeros_like(ts_seg_npy, dtype=np.uint8)
+        ts_seg_merged_npy = np.zeros_like(ts_seg_npy, dtype=np.uint8)
 
-    missing_indices = set(sorted(INDEX_TO_ANATOMICAL_STRUCTURES.keys()))
+        missing_indices = set(sorted(INDEX_TO_ANATOMICAL_STRUCTURES.keys()))
 
-    # Merge
-    for merged_structure, structures_to_merge in sorted(MERGED_ANATOMICAL_STRUCTURES.items()):
-        indices_to_merge = [ANATOMICAL_STRUCTURES_TO_INDEX[structure] for structure in structures_to_merge]
+        # Merge
+        for merged_structure, structures_to_merge in sorted(MERGED_ANATOMICAL_STRUCTURES.items()):
+            indices_to_merge = [ANATOMICAL_STRUCTURES_TO_INDEX[structure] for structure in structures_to_merge]
 
-        # Remove labels_to_merge from all_label_indices
-        missing_indices -= set(indices_to_merge)
+            # Remove labels_to_merge from all_label_indices
+            missing_indices -= set(indices_to_merge)
 
-        idx_to_use = MERGED_ANATOMICAL_STRUCTURES_TO_INDEX[merged_structure]
+            idx_to_use = MERGED_ANATOMICAL_STRUCTURES_TO_INDEX[merged_structure]
 
-        mask = np.isin(ts_seg_npy, indices_to_merge[1:])
-        ts_seg_merged_npy[mask] = idx_to_use
+            mask = np.isin(ts_seg_npy, indices_to_merge[1:])
+            ts_seg_merged_npy[mask] = idx_to_use
 
-    # Add the remaining structures
-    for idx in sorted(missing_indices):
-        missing_anatomical_structure = INDEX_TO_ANATOMICAL_STRUCTURES[idx]
-        idx_to_use = MERGED_ANATOMICAL_STRUCTURES_TO_INDEX[missing_anatomical_structure]
-        ts_seg_merged_npy[ts_seg_npy == idx] = idx_to_use
+        # Add the remaining structures
+        for optimized_label_idx in sorted(missing_indices):
+            missing_anatomical_structure = INDEX_TO_ANATOMICAL_STRUCTURES[optimized_label_idx]
+            idx_to_use = MERGED_ANATOMICAL_STRUCTURES_TO_INDEX[missing_anatomical_structure]
+            ts_seg_merged_npy[ts_seg_npy == optimized_label_idx] = idx_to_use
+
+        # Save
+        ts_seg_merged_nii = nib.Nifti1Image(
+            ts_seg_merged_npy, ts_seg_nii.affine, ts_seg_nii.header, extra=ts_seg_nii.extra
+        )
+        nib.save(ts_seg_merged_nii, ts_seg_merged_path)
+
+    # Create TS seg with same labels as optimized segs, which were based on MOOSE
+    ts_seg_like_optimized_path = ts_seg_path.parent / f"{ts_seg_path.name.split('.')[0]}_like_optimized.nii.gz"
+    # if not ts_seg_like_optimized_path.exists():
+    # Load merged seg
+    ts_seg_merged_nii = nib.load(ts_seg_merged_path)
+    ts_seg_merged_npy = ts_seg_merged_nii.get_fdata()
+
+    ts_seg_like_optimized_npy = np.zeros_like(ts_seg_merged_npy, dtype=np.uint8)
+
+    for optimized_label_idx, optimized_label_name in INDEX_TO_OPTIMIZED_LABELS.items():
+        # Find corresponding merged label index
+        ts_merged_label_idx = MERGED_ANATOMICAL_STRUCTURES_TO_INDEX[optimized_label_name]
+
+        # Assign the merged label index to the corresponding optimized label index
+        ts_seg_like_optimized_npy[ts_seg_merged_npy == ts_merged_label_idx] = optimized_label_idx
 
     # Save
-    ts_seg_merged_path = ts_seg_path.parent / f"{ts_seg_path.name.split('.')[0]}_merged.nii.gz"
-    ts_seg_merged_nii = nib.Nifti1Image(ts_seg_merged_npy, ts_seg_nii.affine, ts_seg_nii.header, extra=ts_seg_nii.extra)
-    nib.save(ts_seg_merged_nii, ts_seg_merged_path)
+    ts_seg_like_optimized_nii = nib.Nifti1Image(
+        ts_seg_like_optimized_npy, ts_seg_merged_nii.affine, ts_seg_merged_nii.header, extra=ts_seg_merged_nii.extra
+    )
+    nib.save(ts_seg_like_optimized_nii, ts_seg_like_optimized_path)
 
 
 if __name__ == "__main__":
