@@ -28,7 +28,7 @@ def predict_nnunet(
     plans: str = "nnUNetPlans",
     config: str = "3d_fullres",
     folds: str = "0 1 2 3 4",
-    checkpoint_name: str = "checkpoint_best",
+    checkpoint_name: str = "checkpoint_final",
     test_datasets: str = "internal",
     test_images_dir_name: str = "imagesTs",
     split_images: bool = False,
@@ -81,7 +81,13 @@ def predict_nnunet(
                         # From https://github.com/wasserth/TotalSegmentator/blob/master/totalsegmentator/nnunet.py#L333C1-L342C49
                         third = image_nifti.shape[2] // 3
                         margin = 20
-                        image_data = image_nifti.get_fdata()
+
+                        try:
+                            image_data = image_nifti.get_fdata()
+                        except Exception as e:
+                            logger.error(f"Error reading {image_name}: {e}")
+                            continue
+
                         nib.save(
                             nib.Nifti1Image(image_data[:, :, : third + margin], image_nifti.affine),
                             tmp_dir / "s01_0000.nii.gz",
@@ -113,7 +119,6 @@ def predict_nnunet(
                         f"-c {config} "
                         f"-f {folds} "
                         f"-chk {checkpoint_name}.pth "
-                        "--disable_tta "
                         "-npp 1 "
                         "-nps 1 "
                     )
@@ -153,8 +158,6 @@ def predict_nnunet(
             dataset_json_file=raw_dir / "dataset.json",
             plans_file=model_results_dir / "plans.json",
             output_file=str(output_file := output_dir / output_file_name),
-            num_processes=1,
-            chill=True,
         )
 
         logger.info(f"Created {output_file}")

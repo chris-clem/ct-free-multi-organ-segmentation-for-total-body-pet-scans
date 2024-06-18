@@ -37,6 +37,7 @@ def convert_data_for_nnunet(
     """
     use_optimized_seg = seg_type == "moose_optimized"
     use_merged_seg = seg_type == "ts_merged"
+    use_like_optimized_seg = seg_type == "ts_like_optimized"
 
     # Load data
     data_csv_path = Path(data_csv_path)
@@ -99,12 +100,12 @@ def convert_data_for_nnunet(
     labels_ts_dir = dataset_raw_dir / "labelsTs"
     labels_ts_dir.mkdir(exist_ok=True)
 
-    create_symlinks(df_test[f"pet_{pet_type}"].values, nnunet_dir=labels_ts_dir)
+    create_symlinks(df_test[f"seg_{seg_type}"].values, nnunet_dir=labels_ts_dir)
     logger.debug(f"Created {len(list(labels_ts_dir.iterdir()))} symlinks in {labels_ts_dir}")
 
     if use_merged_seg:
         labels = MERGED_ANATOMICAL_STRUCTURES_TO_INDEX
-    elif use_optimized_seg:
+    elif use_optimized_seg or use_like_optimized_seg:
         labels = OPTIMIZED_LABELS_TO_INDEX
     else:
         labels = ANATOMICAL_STRUCTURES_TO_INDEX
