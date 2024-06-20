@@ -49,6 +49,20 @@ train
     └── ...
 ```
 
+Files per patient:
+```bash
+AC array[440, 440, 644] n=124678400 (0.9Gb) x∈[0., 1.267e+05] μ=168.294 σ=943.667 --> AC corrected PET
+CT_seg array[512, 512, 644] n=168820736 (1.3Gb) x∈[0., 12.000] μ=0.083 σ=0.919    --> MOOSEv1 segmentation (CT Space)
+CT_TS_seg array[512, 512, 644] n=168820736 (1.3Gb) x∈[0., 117.000] μ=0.944 σ=8.338 --> TotalSegmentator segmentation (CT Space)
+CT array[512, 512, 644] n=168820736 (1.3Gb) x∈[-1.024e+03, 3.071e+03] μ=-922.156 σ=271.670 --> CT
+NAC array[440, 440, 644] n=124678400 (0.9Gb) x∈[0., 9.649e+03] μ=43.264 σ=176.408 --> Non-AC corrected PET
+optimized_seg array[440, 440, 644] n=124678400 (0.9Gb) x∈[0., 12.000] μ=0.098 σ=0.954 --> MOOSEv1 segmentation refined by physicians (PET Space)
+organ_seg array[440, 440, 644] n=124678400 (0.9Gb) x∈[0., 12.000] μ=0.096 σ=0.985 --> MOOSEv1 segmentation (PET Space)
+organ_TS_seg_merged array[440, 440, 644] n=124678400 (0.9Gb) x∈[0., 45.000] μ=0.404 σ=3.609 --> TotalSegmentator segmentation with merged labels (PET Space)
+organ_TS_seg array[440, 440, 644] n=124678400 (0.9Gb) x∈[0., 117.000] μ=1.086 σ=8.936 --> TotalSegmentator segmentation (PET Space)
+```
+
+
 ### 1. Create CT-based segmentation masks with TotalSegmentator
 
 ```bash
