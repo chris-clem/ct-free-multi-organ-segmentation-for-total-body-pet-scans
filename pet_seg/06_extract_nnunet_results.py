@@ -68,7 +68,8 @@ def extract_nnunet_results(
         patient_dice_scores = create_patient_dice_scores_df(summary_path, use_merged_seg="merged" in test_datasets)
 
         # Merge with dicom header
-        patient_dice_scores = patient_dice_scores.merge(dicom_header_df, left_on="patient_id", right_on="PID")
+        if not test_datasets == "internal_merged":
+            patient_dice_scores = patient_dice_scores.merge(dicom_header_df, left_on="patient_id", right_on="PID")
 
         patient_dice_scores_dfs.append(patient_dice_scores)
 

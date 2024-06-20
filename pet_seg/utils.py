@@ -70,13 +70,13 @@ def create_patient_dice_scores_df(nnunet_summary_path, use_merged_seg):
     return patient_dice_scores
 
 
-def compute_ci_intervals(confidence, dice_scores_df, col):
+def compute_ci_intervals(dice_scores_df, col, confidence):
     """Compute confidence intervals for the given column of the given DataFrame.
 
     Args:
-        confidence (float): Confidence level to use for the confidence intervals.
         dice_scores_df (pd.DataFrame): DataFrame containing the dice scores for each patient.
         col (str): Column to compute the confidence intervals for.
+        confidence (float): Confidence level to use for the confidence intervals.
 
     Returns:
         tuple: Confidence intervals.
@@ -94,16 +94,17 @@ def compute_ci_intervals(confidence, dice_scores_df, col):
     return ci
 
 
-def create_ci_intervals_str(dice_scores_df, col, ci_intervals):
+def create_ci_intervals_str(dice_scores_df, col, confidence):
     """Create a string containing the confidence intervals for the given column of the given DataFrame.
 
     Args:
         dice_scores_df (pd.DataFrame): DataFrame containing the dice scores for each patient.
         col (str): Column to compute the confidence intervals for.
-        ci_intervals (tuple): Confidence intervals.
+        confidence (float): Confidence level to use for the confidence intervals.
 
     Returns:
         str: Confidence intervals string.
     """
-    ci_str = f"{dice_scores_df[col].mean():.3f} (95% CI: {ci_intervals[0]:.3f}, {ci_intervals[1]:.3f}), n={len(dice_scores_df)}"  # noqa: E501
+    ci_intervals = compute_ci_intervals(dice_scores_df, col, confidence)
+    ci_str = f"{dice_scores_df[col].mean():.3f} (95% CI: {ci_intervals[0]:.3f}, {ci_intervals[1]:.3f})"  # noqa: E501
     return ci_str

@@ -150,7 +150,6 @@ def predict_nnunet(
         if use_optimized_labels:
             folder_ref_name += "_optimized"
             output_file_name = "summary_optimized.json"
-            output_dir = output_dir / "merged_labels"
 
         compute_metrics_on_folder2(
             folder_ref=raw_dir / folder_ref_name,

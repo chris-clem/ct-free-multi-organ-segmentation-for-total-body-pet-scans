@@ -342,60 +342,81 @@ MERGED_ANATOMICAL_STRUCTURES = {
 }
 
 ANATOMICAL_REGIONS = {
-    "Skeleton": [  # 63
-        "Skull",  # 1
-        "Claviculas",  # 2
-        "Scapulas",  # 2
-        "Humeruses",  # 2
-        # "Vertebraes",  # 24
-        "Sternum",  # 1
-        # "Ribs",  # 24
-        # "Costal Cartilages",  # 2
-        "Hips",  # 2
-        "Sacrum",  # 1
-        "Femurs",  # 2
-    ],
-    "Cardiovascular System": [  # 17
-        "Common Carotid Arteries",  # 2
-        "Brachiocephalic Veins",  # 2
-        "Subclavian Arteries",  # 2
-        # "Brachiocephalic Trunk",  # 1
-        "Pulmonary Vein",  # 1
-        "Vena Cavas",  # 2
-        # "Atrial Appendage Left",  # 1
-        "Aorta",  # 1
-        # "Portal Vein and Splenic Vein",  # 1
-        "Iliac Arteries",  # 2
-        "Iliac Venas",  # 2
-    ],
-    "Other Organs": [  # 21
+    # "Skeleton": [  # 63
+    #     "Skull",  # 1
+    #     "Claviculas",  # 2
+    #     "Scapulas",  # 2
+    #     "Humeruses",  # 2
+    #     "Vertebraes",  # 24
+    #     "Sternum",  # 1
+    #     "Ribs",  # 24
+    #     "Costal Cartilages",  # 2
+    #     "Hips",  # 2
+    #     "Sacrum",  # 1
+    #     "Femurs",  # 2
+    # ],
+    # "Cardiovascular System": [  # 17
+    #     "Common Carotid Arteries",  # 2
+    #     "Brachiocephalic Veins",  # 2
+    #     "Subclavian Arteries",  # 2
+    #     # "Brachiocephalic Trunk",  # 1
+    #     "Pulmonary Vein",  # 1
+    #     "Vena Cavas",  # 2
+    #     # "Atrial Appendage Left",  # 1
+    #     "Aorta",  # 1
+    #     # "Portal Vein and Splenic Vein",  # 1
+    #     "Iliac Arteries",  # 2
+    #     "Iliac Venas",  # 2
+    # ],
+    # "Other Organs": [  # 21
+    #     # "Brain",
+    #     "Spinal Cord",
+    #     "Thyroid Gland",
+    #     # "Trachea",
+    #     "Lungs",  # 5
+    #     "Heart",
+    #     # "Adrenal Glands",  # 2
+    #     "Spleen",
+    #     "Liver",
+    #     # "Gallbladder",
+    #     "Kidneys",  # 2
+    #     # "Kidney Cysts",  # 2
+    #     "Pancreas",
+    #     # "Prostate",
+    # ],
+    # "Gastrointestinal Tract": [  # 6
+    #     "Esophagus",
+    #     "Stomach",
+    #     "Duodenum",
+    #     "Small Bowel",
+    #     "Colon",
+    #     "Urinary Bladder",
+    # ],
+    # "Muscles": [  # 10
+    #     "Autochthons",  # 2
+    #     "Iliopsoas",  # 2
+    #     "Gluteus",  # 6
+    # ],
+    # "Bones": [
+    #     "Femurs",
+    #     "Hips",
+    #     "Skull",
+    #     "Sternum",
+    #     "Vertebraes",
+    # ],
+    "Main Organs": [
+        # "Adrenal Glands",
+        # "Aorta",
         # "Brain",
-        "Spinal Cord",
-        "Thyroid Gland",
-        # "Trachea",
-        "Lungs",  # 5
         "Heart",
-        # "Adrenal Glands",  # 2
-        "Spleen",
+        "Kidneys",
         "Liver",
-        # "Gallbladder",
-        "Kidneys",  # 2
-        # "Kidney Cysts",  # 2
+        "Lungs",
         "Pancreas",
-        # "Prostate",
-    ],
-    "Gastrointestinal Tract": [  # 6
-        "Esophagus",
-        "Stomach",
-        "Duodenum",
-        "Small Bowel",
-        "Colon",
+        "Spleen",
+        # "Stomach",
+        "Thyroid Gland",
         "Urinary Bladder",
-    ],
-    "Muscles": [  # 10
-        "Autochthons",  # 2
-        "Iliopsoas",  # 2
-        "Gluteus",  # 6
     ],
 }
 
@@ -451,54 +472,67 @@ INDEX_TO_MERGED_ANATOMICAL_STRUCTURES = {
     45: "Costal Cartilages",
 }
 
+CONFIDENCE = 0.95
+
 MERGED_ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_MERGED_ANATOMICAL_STRUCTURES.items()}
 
 INDEX_TO_OPTIMIZED_LABELS = {
     0: "background",
-    1: "Adrenal-glands",
+    1: "Adrenal Glands",
     2: "Aorta",
-    3: "Bladder",
+    3: "Urinary Bladder",
     4: "Brain",
     5: "Heart",
     6: "Kidneys",
     7: "Liver",
     8: "Pancreas",
     9: "Spleen",
-    10: "Thyroid",
-    11: "Inferior-vena-cava",
-    12: "Lung",
+    10: "Thyroid Gland",
+    11: "Vena Cavas",
+    12: "Lungs",
 }
 
 OPTIMIZED_LABELS_TO_INDEX = {v: k for k, v in INDEX_TO_OPTIMIZED_LABELS.items()}
 
 
 MODEL_DATASET_IDS_TO_NAMES = {
-    1: "Dataset001_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
-    2: "Dataset002_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
-    # 1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
-    # 9: "Dataset009_Renji_uExplorer-num_train=378-num_test=50_NAC",
+    # 1: "Dataset001_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    # 2: "Dataset002_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    9: "Dataset009_Renji_uExplorer-num_train=378-num_test=50_NAC",
     100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    200: "Dataset200_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_NAC-moose_optimized",
+    201: "Dataset201_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC-ts_like_optimized",
 }
 
 TEST_DATASET_IDS_TO_NAMES = {
-    1: "Dataset001_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
-    2: "Dataset002_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
-    12: "Dataset012_SH_uExplorer_Renji_dynamic-num_dynamic_frames=12-num_train=0-num_test=228_NAC",
-    13: "Dataset013_SH_uExplorer_Renji_dynamic-num_dynamic_frames=12-num_train=0-num_test=228_STATIC",
-    92: "Dataset092_SH_uExplorer_Renji_dynamic-num_dynamic_frames=92-num_train=0-num_test=1840_NAC",
+    # 1: "Dataset001_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    # 2: "Dataset002_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
+    # 12: "Dataset012_SH_uExplorer_Renji_dynamic-num_dynamic_frames=12-num_train=0-num_test=228_NAC",
+    # 13: "Dataset013_SH_uExplorer_Renji_dynamic-num_dynamic_frames=12-num_train=0-num_test=228_STATIC",
+    # 92: "Dataset092_SH_uExplorer_Renji_dynamic-num_dynamic_frames=92-num_train=0-num_test=1840_NAC",
     # 0: "Dataset000_Bern_Quadra-num_train=0-num_test=25_NAC",
-    # # 1: "Dataset001_SH_uExplorer-num_train=0-num_test=25_NAC",
-    # 1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
-    # 2: "Dataset002_Bern_Quadra_UHS-num_train=0-num_test=21_NAC",
-    # 3: "Dataset003_Bern_Vision600-num_train=0-num_test=52_NAC",
-    # 4: "Dataset004_SH_GE_Discovery-num_train=0-num_test=104_NAC",
-    # 5: "Dataset005_SH_UI780-num_train=0-num_test=100_NAC",
-    # 6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
-    # 7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
-    # 8: "Dataset008_SH_Vision450_cross_tracer-num_train=0-num_test=41_NAC",
-    # 10: "Dataset010_Renji_uExplorer_dynamic-num_train=0-num_test=276_NAC",
-    # 11: "Dataset011_Renji_uExplorer_dynamic-num_train=0-num_test=276_STATIC",
-    # 100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    # 1: "Dataset001_SH_uExplorer-num_train=0-num_test=25_NAC",
+    1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    2: "Dataset002_Bern_Quadra_UHS-num_train=0-num_test=21_NAC",
+    3: "Dataset003_Bern_Vision600-num_train=0-num_test=52_NAC",
+    4: "Dataset004_SH_GE_Discovery-num_train=0-num_test=104_NAC",
+    5: "Dataset005_SH_UI780-num_train=0-num_test=100_NAC",
+    6: "Dataset006_SH_Vision450-num_train=0-num_test=51_NAC",
+    7: "Dataset007_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC",
+    8: "Dataset008_SH_Vision450_cross_tracer-num_train=0-num_test=41_NAC",
+    10: "Dataset010_Renji_uExplorer_dynamic-num_train=0-num_test=276_NAC",
+    11: "Dataset011_Renji_uExplorer_dynamic-num_train=0-num_test=276_STATIC",
+    100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
+    101: "Dataset101_Bern_Quadra_UHS-num_train=0-num_test=21_NAC-ts_merged",
+    102: "Dataset102_Bern_Vision600-num_train=0-num_test=51_NAC-ts_merged",
+    103: "Dataset103_SH_GE_Discovery-num_train=0-num_test=104_NAC-ts_merged",
+    104: "Dataset104_SH_UI780-num_train=0-num_test=99_NAC-ts_merged",
+    105: "Dataset105_SH_Vision450-num_train=0-num_test=51_NAC-ts_merged",
+    106: "Dataset106_Bern_Vision600_cross_tracer-num_train=0-num_test=30_NAC-ts_merged",
+    107: "Dataset107_SH_Vision_cross_tracer-num_train=0-num_test=41_NAC-ts_merged",
+    200: "Dataset200_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_NAC-moose_optimized",
+    201: "Dataset201_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC-ts_like_optimized",
 }
 
 TEST_DATASETS_TO_IDS = {
@@ -517,6 +551,9 @@ TEST_DATASETS_TO_IDS = {
     "dynamic": [10],
     "dynamic_static": [11],
     "internal_merged": [100],
+    "cross_scanner_merged": [101, 102, 103, 104, 105],
+    "cross_tracer_merged": [106, 107],
+    "internal_ts_like_optimized": [201],
 }
 
 FRAME_TIMES_S = {
