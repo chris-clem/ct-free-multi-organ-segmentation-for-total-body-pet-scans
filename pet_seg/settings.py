@@ -49,6 +49,16 @@ BERN_QUADRA_TEST_PATIENT_IDS = [
     "171616",
     "171657",
     "173413",
+    "20220908_162603",  # new ones start here
+    "161113",
+    "162626",
+    "161909",
+    "161045",
+    "170238",
+    "144214",
+    "144634",
+    "162652",
+    "144302",
 ]
 
 SH_UEXPLORER_TEST_PATIENT_IDS = [
@@ -77,6 +87,16 @@ SH_UEXPLORER_TEST_PATIENT_IDS = [
     "105153",
     "110757",
     "113047",
+    "114311",  # new ones start here
+    "105327",
+    "142512",
+    "110431",
+    "092407",
+    "1535534_091146",
+    "093600",
+    "140021",
+    "094629",
+    "144000",
 ]
 
 TEST_PATIENT_IDS = {
@@ -205,6 +225,8 @@ INDEX_TO_ANATOMICAL_STRUCTURES = {
     116: "Sternum",
     117: "Costal Cartilages",
 }
+
+ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_ANATOMICAL_STRUCTURES.items()}
 
 MERGED_ANATOMICAL_STRUCTURES = {
     "Kidneys": [
@@ -392,22 +414,22 @@ ANATOMICAL_REGIONS = {
     #     "Colon",
     #     "Urinary Bladder",
     # ],
-    # "Muscles": [  # 10
-    #     "Autochthons",  # 2
-    #     "Iliopsoas",  # 2
-    #     "Gluteus",  # 6
-    # ],
-    # "Bones": [
-    #     "Femurs",
-    #     "Hips",
-    #     "Skull",
-    #     "Sternum",
-    #     "Vertebraes",
-    # ],
+    "Muscles": [  # 10
+        "Autochthons",  # 2
+        "Iliopsoas",  # 2
+        "Gluteus",  # 6
+    ],
+    "Bones": [
+        "Femurs",
+        "Hips",
+        "Skull",
+        "Sternum",
+        "Vertebraes",
+    ],
     "Main Organs": [
         # "Adrenal Glands",
         # "Aorta",
-        # "Brain",
+        "Brain",
         "Heart",
         "Kidneys",
         "Liver",
@@ -420,8 +442,6 @@ ANATOMICAL_REGIONS = {
     ],
 }
 
-
-ANATOMICAL_STRUCTURES_TO_INDEX = {v: k for k, v in INDEX_TO_ANATOMICAL_STRUCTURES.items()}
 
 INDEX_TO_MERGED_ANATOMICAL_STRUCTURES = {
     0: "background",
@@ -500,9 +520,13 @@ MODEL_DATASET_IDS_TO_NAMES = {
     # 2: "Dataset002_SH_uExplorer_Renji-num_train=900-num_test=99_NAC",
     1: "Dataset001_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
     9: "Dataset009_Renji_uExplorer-num_train=378-num_test=50_NAC",
-    100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
     200: "Dataset200_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_NAC-moose_optimized",
     201: "Dataset201_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC-ts_like_optimized",
+    202: "Dataset202_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_NAC-ts_like_optimized",
+    300: "Dataset300_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_AC-moose_optimized",
+    302: "Dataset302_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_AC-ts_like_optimized",
+    501: "Dataset501_Bern_Quadra-SH_uExplorer-num_train=938-num_test=68_NAC-ts_merged",
+    503: "Dataset503_Bern_Quadra-SH_uExplorer-num_train=938-num_test=68_NAC-ts",
 }
 
 TEST_DATASET_IDS_TO_NAMES = {
@@ -523,7 +547,6 @@ TEST_DATASET_IDS_TO_NAMES = {
     8: "Dataset008_SH_Vision450_cross_tracer-num_train=0-num_test=41_NAC",
     10: "Dataset010_Renji_uExplorer_dynamic-num_train=0-num_test=276_NAC",
     11: "Dataset011_Renji_uExplorer_dynamic-num_train=0-num_test=276_STATIC",
-    100: "Dataset100_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC",
     101: "Dataset101_Bern_Quadra_UHS-num_train=0-num_test=21_NAC-ts_merged",
     102: "Dataset102_Bern_Vision600-num_train=0-num_test=51_NAC-ts_merged",
     103: "Dataset103_SH_GE_Discovery-num_train=0-num_test=104_NAC-ts_merged",
@@ -533,6 +556,10 @@ TEST_DATASET_IDS_TO_NAMES = {
     107: "Dataset107_SH_Vision_cross_tracer-num_train=0-num_test=41_NAC-ts_merged",
     200: "Dataset200_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_NAC-moose_optimized",
     201: "Dataset201_Bern_Quadra-SH_uExplorer-num_train=956-num_test=50_NAC-ts_like_optimized",
+    202: "Dataset202_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_NAC-ts_like_optimized",
+    300: "Dataset300_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_AC-moose_optimized",
+    302: "Dataset302_Bern_Quadra-SH_uExplorer-num_train=50-num_test=0_AC-ts_like_optimized",
+    501: "Dataset501_Bern_Quadra-SH_uExplorer-num_train=938-num_test=68_NAC-ts_merged",
 }
 
 TEST_DATASETS_TO_IDS = {
@@ -550,10 +577,13 @@ TEST_DATASETS_TO_IDS = {
     "cross_tracer": [7, 8],
     "dynamic": [10],
     "dynamic_static": [11],
-    "internal_merged": [100],
     "cross_scanner_merged": [101, 102, 103, 104, 105],
     "cross_tracer_merged": [106, 107],
-    "internal_ts_like_optimized": [201],
+    "internal_moose_optimized_nac": [200],
+    "internal_ts_like_optimized_nac": [201],
+    "internal_moose_optimized_ac": [300],
+    "internal_ts_like_optimized_ac": [302],
+    "internal_merged_new_ts": [501],
 }
 
 FRAME_TIMES_S = {
