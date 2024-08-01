@@ -16,14 +16,14 @@ def main():
 
 
 def compare_ts_and_optimized_labels(
-    dataset_id: int = 1,
+    dataset_id: int = 501,
 ):
     dataset_name = MODEL_DATASET_IDS_TO_NAMES[dataset_id]
     raw_dir = NNUNET_RAW_DIR / dataset_name
-    model_results_dir = NNUNET_RESULTS_DIR / dataset_name / "nnUNetTrainerNoMirroring__nnUNetPlans__3d_fullres"
+    model_results_dir = NNUNET_RESULTS_DIR / dataset_name / "nnUNetTrainer__nnUNetResEncUNetMPlans__3d_fullres"
 
-    labels_ts_optimized_dir = raw_dir / "labelsTs_optimized"
-    labels_ts_dir = raw_dir / "labelsTs_merged"
+    labels_ts_optimized_dir = raw_dir / "labelsTs_optimized_changed_order"
+    labels_ts_dir = raw_dir / "labelsTs"
 
     compute_metrics_on_folder2(
         folder_ref=labels_ts_optimized_dir,
