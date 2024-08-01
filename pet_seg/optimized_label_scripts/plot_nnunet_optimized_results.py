@@ -14,8 +14,8 @@ from matplotlib.colors import ListedColormap
 from monai.visualize.utils import blend_images
 from skimage.morphology import dilation
 
-from pet_seg.settings import ANATOMICAL_STRUCTURES_TO_INDEX
 from pet_seg.settings import CONFIDENCE
+from pet_seg.settings import MERGED_ANATOMICAL_STRUCTURES_TO_INDEX
 from pet_seg.settings import RESULTS_DIR
 from pet_seg.utils import create_ci_intervals_str
 
@@ -25,9 +25,9 @@ NNUNET_RESULTS_DIR = Path(os.environ["nnUNet_results"])
 HEX_COLORS = {
     "Brain": "#8dd3c7",
     "Heart": "#ffffb3",
-    "Kidney Right": "#bebada",
+    "Kidneys": "#bebada",
     "Liver": "#fb8072",
-    "Lung Upper Lobe Left": "#80b1d3",
+    "Lungs": "#80b1d3",
     "Pancreas": "#fdb462",
     "Spleen": "#b3de69",
     "Thyroid Gland": "#fccde5",
@@ -45,84 +45,93 @@ def plot_nnunet_test_results():
     optimized_label_names = [
         "Brain",
         "Heart",
-        "Kidney Right",
+        "Kidneys",
         "Liver",
-        "Lung Upper Lobe Left",
+        "Lungs",
         "Pancreas",
         "Spleen",
         "Thyroid Gland",
         "Urinary Bladder",
     ]
-    st.write(optimized_label_names)
 
-    for patient_dice_scores_path in (RESULTS_DIR / "patient_dice_scores").glob("Dataset001*_optimized.csv"):
+    for metric in ("Dice", "IoU"):
+        st.write(f"# {metric}")
 
-        is_ts_vs_optimized = "ts_vs_optimized" in patient_dice_scores_path.stem
+        for patient_dice_scores_path in (RESULTS_DIR / "patient_metrics").glob(f"ts_vs_optimized_labels__{metric}.csv"):
+            is_ts_vs_optimized = "ts_vs_optimized" in patient_dice_scores_path.stem
 
-        # Extract model, dataset, trainer, config, fold, and test datasets from the path
-        if not is_ts_vs_optimized:
-            path_stem = patient_dice_scores_path.stem
-            model_dataset_name, trainer, config, fold_str, test_datasets = path_stem.split("__")
+            if is_ts_vs_optimized:
+                st.write(f"# {patient_dice_scores_path.stem}")
+            else:
+                path_stem = patient_dice_scores_path.stem
+                st.write(path_stem)
+                (
+                    model_dataset_name,
+                    trainer,
+                    plans,
+                    config,
+                    fold_str,
+                    test_datasets,
+                    optimized,
+                    metric,
+                ) = path_stem.split("__")
 
-            st.write(f"# {model_dataset_name} - {trainer} - {config} - {fold_str} - {test_datasets}")
-        else:
-            st.write(f"# {patient_dice_scores_path.stem}")
+                st.write(f"# {model_dataset_name} - {trainer} - {plans} - {config} - {fold_str} - {test_datasets}")
 
-        # Load the dice scores
-        dice_scores_df = pd.read_csv(patient_dice_scores_path)
-        # Use patient_id as index
-        dice_scores_df = dice_scores_df.set_index("patient_id")
-        # Filter out columns with nan values
-        dice_scores_df = dice_scores_df.dropna(axis=1)
-        # Filter out columns with 0.0 values
-        dice_scores_df = dice_scores_df.loc[:, (dice_scores_df != 0).any(axis=0)]
+            # Load the dice scores
+            dice_scores_df = pd.read_csv(patient_dice_scores_path)
+            dice_scores_df = dice_scores_df.set_index("patient_id")
+            dice_scores_df = dice_scores_df.dropna(axis=1)
+            dice_scores_df = dice_scores_df.loc[:, (dice_scores_df != 0).any(axis=0)]
 
-        # Iterate over datasets
-        for dataset in dice_scores_df["dataset"].unique():
-            # Get dirs containing images, labels, and preds
-            if not is_ts_vs_optimized:
-                raw_dataset_dir = NNUNET_RAW_DIR / dataset.replace("imagesTs_", "")
-                predictions_dir = (
-                    NNUNET_RESULTS_DIR
-                    / model_dataset_name
-                    / f"{trainer}__nnUNetPlans__{config}"
-                    / fold_str
-                    / "predictions"
-                    / dataset
-                    / "merged_labels"
-                )
+            for dataset in dice_scores_df["dataset"].unique():
+                # Get dirs containing images, labels, and preds
+                if not is_ts_vs_optimized:
+                    raw_dataset_dir = NNUNET_RAW_DIR / dataset.replace("imagesTs_", "")
+                    predictions_dir = (
+                        NNUNET_RESULTS_DIR
+                        / model_dataset_name
+                        / f"{trainer}__{plans}__{config}"
+                        / fold_str
+                        / "predictions"
+                        / dataset
+                        # / "merged_labels"
+                    )
 
-            st.write(f"## {dataset}")
+                st.write(f"## {dataset}")
 
-            # Get dice scores for the dataset
-            dataset_dsc_df = dice_scores_df[dice_scores_df["dataset"] == dataset]
+                # Get dice scores for the dataset
+                dataset_dsc_df = dice_scores_df[dice_scores_df["dataset"] == dataset]
 
-            # Get dice scores for uExplorer and Quadra scanners
-            uexplorer_dsc_df = dataset_dsc_df[dataset_dsc_df.index.str.contains("Anonymous")]
-            quadra_dsc_df = dataset_dsc_df[~dataset_dsc_df.index.str.contains("Anonymous")]
+                # Get dice scores for uExplorer and Quadra scanners
+                uexplorer_dsc_df = dataset_dsc_df[dataset_dsc_df.index.str.contains("Anonymous")]
+                quadra_dsc_df = dataset_dsc_df[~dataset_dsc_df.index.str.contains("Anonymous")]
 
-            for dataset_name, scanner_dsc_df in zip(
-                ("Bern Quadra (n = 25)", "Shanghai uExplorer (n = 25)"), (quadra_dsc_df, uexplorer_dsc_df)
-            ):
-                # Get dice scores for optimized labels
-                regions_dsc_df = scanner_dsc_df[optimized_label_names]
+                for dataset_name, scanner_dsc_df in zip(
+                    ("Bern Quadra (n = 34)", "Shanghai uExplorer (n = 34)"), (quadra_dsc_df, uexplorer_dsc_df)
+                ):
+                    st.write(f"### {dataset_name}")
+                    st.write(scanner_dsc_df)
 
-                st.write(f"### {dataset_name}")
-                st.write(regions_dsc_df)
-                st.write(regions_dsc_df.describe())
+                    # Get dice scores for optimized labels
+                    regions_dsc_df = scanner_dsc_df[optimized_label_names]
 
-                patient_ids_to_plot = extract_patient_ids_to_plot(optimized_label_names, regions_dsc_df)
-                plot_patient_ids(patient_ids_to_plot, raw_dataset_dir, predictions_dir)
+                    st.write(regions_dsc_df)
+                    st.write(regions_dsc_df.describe())
 
-                plot_dsc_boxplots(optimized_label_names, dataset_name, regions_dsc_df)
+                    if not is_ts_vs_optimized:
+                        patient_ids_to_plot = extract_patient_ids_to_plot(optimized_label_names, regions_dsc_df)
+                        plot_patient_ids(patient_ids_to_plot, raw_dataset_dir, predictions_dir)
 
-                regions_dsc_df["mean"] = regions_dsc_df.mean(axis=1)
-                st.write(create_ci_intervals_str(regions_dsc_df, "mean", CONFIDENCE))
+                    plot_dsc_boxplots(optimized_label_names, dataset_name, regions_dsc_df)
+
+                    regions_dsc_df["mean"] = regions_dsc_df.mean(axis=1)
+                    st.write(create_ci_intervals_str(regions_dsc_df, "mean", CONFIDENCE))
 
 
 def extract_patient_ids_to_plot(optimized_label_names, regions_dsc_df):
     patient_ids_to_plot = OrderedDict()
-    for label_name in optimized_label_names[:30]:
+    for label_name in optimized_label_names:
         # Get some quantiles
         label_dice_scores = regions_dsc_df[label_name]
         label_dice_scores_quantiles = label_dice_scores.quantile([0.25, 0.5, 0.75])
@@ -136,12 +145,13 @@ def extract_patient_ids_to_plot(optimized_label_names, regions_dsc_df):
             patient_ids_to_dsc[index] = dice_score
 
         patient_ids_to_plot[label_name] = patient_ids_to_dsc
+
     return patient_ids_to_plot
 
 
 def plot_patient_ids(patient_ids_to_plot, raw_dataset_dir, predictions_dir):
     nrows = len(patient_ids_to_plot)
-    ncols = len(patient_ids_to_plot["Urinary Bladder"])
+    ncols = len(patient_ids_to_plot["Brain"])
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(3.96 * ncols, 3.08 * nrows))
 
     for i, (label_name, patient_ids_to_dsc) in enumerate(patient_ids_to_plot.items()):
@@ -160,13 +170,17 @@ def plot_patient_ids(patient_ids_to_plot, raw_dataset_dir, predictions_dir):
 
 
 def create_blended_slice(raw_dataset_dir, predictions_dir, label_name, patient_id, hex_color):
-    image_npy = nib.load(raw_dataset_dir / "imagesTs" / f"{patient_id}_0000.nii.gz").get_fdata()
-    label_npy = nib.load(raw_dataset_dir / "labelsTs_optimized" / f"{patient_id}.nii.gz").get_fdata()
-    pred_npy = nib.load(predictions_dir / f"{patient_id}.nii.gz").get_fdata()
+    image_path = raw_dataset_dir / "imagesTs" / f"{patient_id}_0000.nii.gz"
+    label_path = raw_dataset_dir / "labelsTs_optimized_changed_order" / f"{patient_id}.nii.gz"
+    pred_path = predictions_dir / f"{patient_id}.nii.gz"
+
+    image_npy = nib.load(image_path).get_fdata()
+    label_npy = nib.load(label_path).get_fdata()
+    pred_npy = nib.load(pred_path).get_fdata()
 
     # Keep only the optimized label
-    label_npy = (label_npy == ANATOMICAL_STRUCTURES_TO_INDEX[label_name]).astype(int)
-    pred_npy = (pred_npy == ANATOMICAL_STRUCTURES_TO_INDEX[label_name]).astype(int)
+    label_npy = (label_npy == MERGED_ANATOMICAL_STRUCTURES_TO_INDEX[label_name]).astype(int)
+    pred_npy = (pred_npy == MERGED_ANATOMICAL_STRUCTURES_TO_INDEX[label_name]).astype(int)
 
     # Find the slice with the largest area
     slice_areas = pred_npy.sum(axis=(0, 1))
@@ -238,7 +252,7 @@ def plot_dsc_boxplots(optimized_label_names, dataset_name, regions_dsc_df):
         palette="Set3",
     )
     ax.set_xlim(0, 1)
-    ax.set_title(dataset_name)
+    # ax.set_title(dataset_name)
     st.write(fig)
 
 
