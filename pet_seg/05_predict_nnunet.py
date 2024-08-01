@@ -23,13 +23,13 @@ def main():
 
 
 def predict_nnunet(
-    model_dataset_id: int = 1,
-    trainer: str = "nnUNetTrainerNoMirroring",
-    plans: str = "nnUNetPlans",
+    model_dataset_id: int = 501,
+    trainer: str = "nnUNetTrainer",
+    plans: str = "nnUNetResEncUNetMPlans",
     config: str = "3d_fullres",
-    folds: str = "0 1 2 3 4",
-    checkpoint_name: str = "checkpoint_final",
-    test_datasets: str = "internal",
+    folds: str = "all",
+    checkpoint_name: str = "checkpoint_best",
+    test_datasets: str = "internal_merged_new_ts",
     test_images_dir_name: str = "imagesTs",
     split_images: bool = False,
     compute_metrics_only: bool = False,
@@ -40,11 +40,13 @@ def predict_nnunet(
     Args:
         model_dataset_id (int): Model trained on the given dataset to use.
         trainer (str): Trainer to use.
+        plans (str): nnUNet plans to use.
         config (str): nnUNet config to use.
         folds (str): Folds to use, separated by spaces.
         checkpoint_name (str): Name of the checkpoint to use. Can be "checkpoint_best" or "checkpoint_latest".
         test_datasets (str): Test datasets to predict on. Can be "internal", "cross_scanner" or "cross_tracer".
-        images_dir_name (str): Name of the images directory to use.
+        test_images_dir_name (str): Name of the images directory to use.
+        split_images (bool): Whether to split images into thirds before predicting.
         compute_metrics_only (bool): Whether to only compute metrics on existing predictions.
         use_optimized_labels (bool): Whether to use optimized labels.
     """
@@ -148,7 +150,7 @@ def predict_nnunet(
         output_file_name = "summary.json"
 
         if use_optimized_labels:
-            folder_ref_name += "_optimized"
+            folder_ref_name += "_optimized_changed_order"
             output_file_name = "summary_optimized.json"
 
         compute_metrics_on_folder2(
